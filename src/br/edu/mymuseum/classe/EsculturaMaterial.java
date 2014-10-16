@@ -6,6 +6,7 @@
 package br.edu.mymuseum.classe;
 
 import java.sql.ResultSet;
+import javax.swing.JTable;
 
 /**
  *
@@ -16,8 +17,11 @@ public class EsculturaMaterial {
     private int cd_obra;
     private int tp_obra;
     private int ps_material;
+    private String ds_material;
     private int[] inserir;
     private ResultSet retorno;
+    private int total;
+    private JTable tabela;
     
 
     public int getCd_material() {
@@ -66,6 +70,30 @@ public class EsculturaMaterial {
 
     public void setInserir(int[] inserir) {
         this.inserir = inserir;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {        
+        this.total += total;
+    }
+
+    public JTable getTabela() {
+        return tabela;
+    }
+
+    public void setTabela(JTable tabela) {
+        this.tabela = tabela;
+    }
+
+    public String getDs_material() {
+        return ds_material;
+    }
+
+    public void setDs_material(String ds_material) {
+        this.ds_material = ds_material;
     }
     
 }
