@@ -3,19 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/interfaces/AutorInterface.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/dao/DaoFuncionario.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/interfaces/ObrasInterface.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/interfaces/Func.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/dao/DaoAutor.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/dao/DaoMaterial.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/classe/Funcionario.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/dao/DaoEsculturaMaterial.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/classe/Guarda.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/classe/EsculturaMaterial.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/classe/Guardinha.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/classe/Pintura.java</file>
-            <file>file:/C:/Users/Dorga/Documents/NetBeansProjects/MyMuseum/src/br/edu/mymuseum/classe/Escultura.java</file>
+            <file>file:/C:/Users/gustavo/Documents/NetBeansProjects/mymuseum/src/br/edu/mymuseum/interfaces/ObrasInterface.java</file>
+            <file>file:/C:/Users/gustavo/Documents/NetBeansProjects/mymuseum/src/br/edu/mymuseum/interfaces/GerenciarExposicao.java</file>
         </group>
     </open-files>
 </project-private>
