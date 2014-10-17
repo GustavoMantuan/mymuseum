@@ -1,13 +1,11 @@
 package br.edu.mymuseum.validacao;
 
-
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-
 
 /**
  *
@@ -15,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class PreencherComboBoxGenerico {
 
-    
+    ArrayList<String> array = new ArrayList<String>();
 
 //    public void PreencherComboBoxGenerico(JComboBox combo, String campo, ResultSet retorno, String atributo_array, ClasseCidade cidade) {
 //        DefaultComboBoxModel modelo = (DefaultComboBoxModel) combo.getModel();
@@ -36,7 +34,6 @@ public class PreencherComboBoxGenerico {
 //            JOptionPane.showMessageDialog(null, "Dados não encontrados!");
 //        }
 //    }
-
     public void PreencherComboBoxGenerico(JComboBox combo, String campo, String chave, ResultSet retorno) {
         DefaultComboBoxModel modelo = (DefaultComboBoxModel) combo.getModel();
         combo.removeAllItems();
@@ -44,14 +41,13 @@ public class PreencherComboBoxGenerico {
         try {
             while (retorno.next()) {
                 combo.addItem(retorno.getString(chave) + " - " + retorno.getString(campo));
-                //cdcidade.add(retorno.getString(campo) + "-" +retorno.getInt(chave));
-
+                array.add(retorno.getInt(chave), retorno.getString(campo));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Dados não Encontrados");
         }
         combo.addItem("Escolha");
-       
+
     }
 
 }
