@@ -100,8 +100,6 @@ public class ObrasInterface extends javax.swing.JFrame {
         psmaterial = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        disponivel = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -268,12 +266,19 @@ public class ObrasInterface extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Codigo", "Material", "Quantidade"
+                "Sel", "Codigo", "Material", "Quantidade"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -289,6 +294,11 @@ public class ObrasInterface extends javax.swing.JFrame {
 
         jButton1.setText("+");
         jButton1.setEnabled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("-");
         jButton2.setEnabled(false);
@@ -301,17 +311,17 @@ public class ObrasInterface extends javax.swing.JFrame {
         });
 
         psmaterial.setEnabled(false);
+        psmaterial.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                psmaterialFocusLost(evt);
+            }
+        });
 
         jLabel8.setText("Código");
         jLabel8.setEnabled(false);
 
         jLabel9.setText("Quantidade");
         jLabel9.setEnabled(false);
-
-        disponivel.setEnabled(false);
-
-        jLabel10.setText("Estoque");
-        jLabel10.setEnabled(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -334,15 +344,12 @@ public class ObrasInterface extends javax.swing.JFrame {
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addComponent(jLabel8)
                                         .addGap(23, 23, 23))
-                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel10)
-                                        .addComponent(jLabel9)))
+                                    .addComponent(jLabel9))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(psmaterial)
                                     .addComponent(codmaterial)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
-                                    .addComponent(disponivel))
+                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -394,23 +401,19 @@ public class ObrasInterface extends javax.swing.JFrame {
                     .addComponent(tp_obra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ds_estilo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(codmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(disponivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(psmaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)))
+                            .addComponent(jButton2)
+                            .addComponent(jButton1)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -422,7 +425,7 @@ public class ObrasInterface extends javax.swing.JFrame {
                     .addComponent(ti_obra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -477,11 +480,11 @@ public class ObrasInterface extends javax.swing.JFrame {
     private void GravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GravarActionPerformed
         getcomp();
         daoobra.incluir(obra);
-        if (tp_obra.getSelectedIndex() == 1) {
-            
+        if (tp_obra.getSelectedIndex() == 1) {            
             daoobra.incluir(pintura);
         } else if (tp_obra.getSelectedIndex() == 2) {
             daoobra.incluir(escultura);
+            daoesculturamaterial.gravar(esculturamaterial,Integer.parseInt(cd_obra.getText()),2);
         }
 
         // TODO add your handling code here:
@@ -519,7 +522,13 @@ public class ObrasInterface extends javax.swing.JFrame {
             jLabel7.setEnabled(true);
             jLabel7.setText("Peso Total da Escultura");
             ds_estilo.setEnabled(true);
-           
+            jTabbedPane1.setEnabled(true);
+            codmaterial.setEnabled(true);
+            psmaterial.setEnabled(true);
+            jLabel8.setEnabled(true);
+            jLabel9.setEnabled(true);
+            
+            ds_estilo.setEnabled(false);
 
         } else {
             jLabel7.setEnabled(false);
@@ -542,7 +551,7 @@ public class ObrasInterface extends javax.swing.JFrame {
         try {
             material.getRetorno().first();
             if (material.getRetorno().getString("NM_MATERIA") != null) {
-                disponivel.setText(material.getRetorno().getString("QT_ESTOQUE"));
+                esculturamaterial.setDs_material(material.getRetorno().getString("NM_MATERIA"));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Insira um material válido");
@@ -555,6 +564,31 @@ public class ObrasInterface extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable2FocusLost
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        esculturamaterial.setCd_obra(Integer.parseInt(cd_obra.getText()));
+        esculturamaterial.setCd_material(Integer.parseInt(codmaterial.getText()));
+        esculturamaterial.setTp_obra(2);
+        esculturamaterial.setPs_material(Integer.parseInt(psmaterial.getText()));
+        esculturamaterial.setTotal(Integer.parseInt(psmaterial.getText()));
+        esculturamaterial.setTabela(jTable2);
+        ds_estilo.setText(Integer.toString(esculturamaterial.getTotal()));
+        daoesculturamaterial.incluiritens(esculturamaterial);
+        codmaterial.setText("");
+        psmaterial.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void psmaterialFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_psmaterialFocusLost
+        // TODO add your handling code here:
+        if (!psmaterial.getText().equals("")){
+            jButton1.setEnabled(true);
+            jButton2.setEnabled(true);
+        }else {
+            jButton1.setEnabled(false);
+            jButton2.setEnabled(false);
+        }
+    }//GEN-LAST:event_psmaterialFocusLost
 
     /**
      * @param args the command line arguments
@@ -602,12 +636,10 @@ public class ObrasInterface extends javax.swing.JFrame {
     public javax.swing.JTextField cd_obra;
     public javax.swing.JComboBox cd_salao;
     public javax.swing.JTextField codmaterial;
-    public javax.swing.JTextField disponivel;
     public javax.swing.JTextField ds_estilo;
     public javax.swing.JButton jButton1;
     public javax.swing.JButton jButton2;
     public javax.swing.JLabel jLabel1;
-    public javax.swing.JLabel jLabel10;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
     public javax.swing.JLabel jLabel4;
