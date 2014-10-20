@@ -5,8 +5,6 @@
  */
 package br.edu.mymuseum.interfaces;
 
-import br.edu.mymuseum.classe.EsculturaMaterial;
-import br.edu.mymuseum.classe.Funcionario;
 import br.edu.mymuseum.classe.ManutencaoMaterial;
 import br.edu.mymuseum.classe.ManutencaoObra;
 import br.edu.mymuseum.classe.Material;
@@ -343,9 +341,7 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 151, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -492,9 +488,6 @@ public class GerenciarManutencao extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox cd_funcionario;
     public javax.swing.JComboBox cd_obra;
-    public javax.swing.JComboBox cd_salao;
-    public javax.swing.JComboBox cd_salao1;
-    public javax.swing.JComboBox cd_salao2;
     public javax.swing.JTextField codmaterial;
     public javax.swing.JTextField custo;
     public javax.swing.JTextField ds_servico;
@@ -505,7 +498,6 @@ public class GerenciarManutencao extends javax.swing.JFrame {
     public javax.swing.JButton jButton3;
     public javax.swing.JButton jButton4;
     public javax.swing.JLabel jLabel1;
-    public javax.swing.JLabel jLabel10;
     public javax.swing.JLabel jLabel11;
     public javax.swing.JLabel jLabel12;
     public javax.swing.JLabel jLabel2;
@@ -514,16 +506,8 @@ public class GerenciarManutencao extends javax.swing.JFrame {
     public javax.swing.JLabel jLabel5;
     public javax.swing.JLabel jLabel6;
     public javax.swing.JLabel jLabel7;
-    public javax.swing.JLabel jLabel8;
-    public javax.swing.JLabel jLabel9;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
-    public javax.swing.JPanel jPanel4;
-    public javax.swing.JPanel jPanel5;
-    public javax.swing.JPanel jPanel6;
-    public javax.swing.JPanel jPanelSala;
-    public javax.swing.JPanel jPanelSala1;
-    public javax.swing.JPanel jPanelSala2;
     public javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTable jTable2;
     public javax.swing.JTextField psmaterial;

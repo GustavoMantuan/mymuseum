@@ -11,13 +11,12 @@ import br.edu.mymuseum.validacao.LimparCampos;
 import br.edu.mymuseum.validacao.Rotinas;
 import br.edu.mymuseum.validacao.UltimaSequencia;
 import br.edu.mymuseum.validacao.ValidaBotoes;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author Dorga
  */
-public class AutorInterface extends javax.swing.JFrame {
+public class AutorInterface extends javax.swing.JDialog {
 
     ValidaBotoes validabotoes = new ValidaBotoes();
     int situacao = Rotinas.PADRÃO;
