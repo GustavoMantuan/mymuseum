@@ -5,6 +5,8 @@
  */
 package br.edu.mymuseum.classe;
 
+import java.sql.ResultSet;
+
 /**
  *
  * @author Dorga
@@ -16,6 +18,7 @@ private int tp_funcinario;
 private String nm_funcionario;
 private Double sl_funcionario;
 private Long cpf;
+private ResultSet retorno;
 
     public int getCd_funcionario() {
         return cd_funcionario;
@@ -55,5 +58,19 @@ private Long cpf;
 
     public void setCpf(Long cpf) {
         this.cpf = cpf;
+    }
+
+    /**
+     * @return the retorno
+     */
+    public ResultSet getRetorno() {
+        return retorno;
+    }
+
+    /**
+     * @param retorno the retorno to set
+     */
+    public void setRetorno(ResultSet retorno) {
+        this.retorno = retorno;
     }
 }

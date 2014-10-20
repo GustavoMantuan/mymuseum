@@ -1,6 +1,8 @@
 package br.edu.mymuseum.dao;
 
 import br.edu.mymuseum.classe.EsculturaMaterial;
+import br.edu.mymuseum.classe.ManutencaoMaterial;
+import br.edu.mymuseum.classe.Obra;
 
 import br.edu.mymuseum.conexao.ConexaoOracle;
 import javax.swing.JOptionPane;
@@ -10,16 +12,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Dorga
  */
-public class DaoEsculturaMaterial {
+public class DaoManutencaoMaterial {
 
     ConexaoOracle conecta_oracle;
 
-    public DaoEsculturaMaterial() {
+    public DaoManutencaoMaterial() {
         conecta_oracle = new ConexaoOracle();
     }
 
-    public void incluiritens(EsculturaMaterial escultura) {
-         DefaultTableModel TabelaItem = (DefaultTableModel) escultura.getTabela().getModel();
+    public void incluiritens(ManutencaoMaterial escultura) {
+        DefaultTableModel TabelaItem = (DefaultTableModel) escultura.getTabela().getModel();
         double soma = 0;
         int totalinha = escultura.getTabela().getRowCount();
         int alterar = 0;
@@ -43,18 +45,19 @@ public class DaoEsculturaMaterial {
             TabelaItem.setValueAt((false), totalinha, 0);
             TabelaItem.setValueAt(escultura.getCd_material(), totalinha, 1);
             TabelaItem.setValueAt(escultura.getDs_material(), totalinha, 2);
-            TabelaItem.setValueAt(escultura.getPs_material(), totalinha, 3);
-           
+            TabelaItem.setValueAt(escultura.getQt_material(), totalinha, 3);
+            TabelaItem.setValueAt(escultura.getCd_obra(), totalinha, 4);
+            TabelaItem.setValueAt(escultura.getTp_obra(), totalinha, 5);
         } else if (alterar == 1) {
-            TabelaItem.setValueAt(escultura.getPs_material(), linha, 3);
+            TabelaItem.setValueAt(escultura.getQt_material(), linha, 3);
         }
 //
 //        escultura.setVl_total_item(escultura.getVl_item() * escultura.getQt_item());
 //        calcultatotal(escultura);
-        
+
     }
-    
-    public void excluiitens(EsculturaMaterial classe) {
+
+    public void excluiitens(ManutencaoMaterial classe) {
         DefaultTableModel tabela = (DefaultTableModel) classe.getTabela().getModel();
         int totlinha = tabela.getRowCount();
         Boolean sel = false;
@@ -75,31 +78,41 @@ public class DaoEsculturaMaterial {
         }
 
     }
-    
+
     public void calcultatotal(EsculturaMaterial classe) {
         int totlinha = classe.getTabela().getRowCount();
-       
+
         int total = 0;
-        for (int i = 0; i < totlinha; i++) {           
-            int valor = (Integer) classe.getTabela().getValueAt(i, 3);         
+        for (int i = 0; i < totlinha; i++) {
+            int valor = (Integer) classe.getTabela().getValueAt(i, 3);
             total += valor;
         }
         classe.setTotal(total);
         System.out.println(total);
     }
-    
-    public void gravar(EsculturaMaterial escultura,int cd_obra,int tp_obra){
-        
-    }
 
-    public void incluir(EsculturaMaterial pessoa) {
+    
+public void grava_itens(ManutencaoMaterial obra) {
+        DefaultTableModel TabelaItem = (DefaultTableModel) obra.getTabela().getModel();
+        int totalinha = obra.getTabela().getRowCount();
+        for (int i = 0; i < totalinha; i++) {
+            obra.setCd_material(Integer.parseInt(TabelaItem.getValueAt(i, 1).toString()));
+            obra.setQt_material(Integer.parseInt(TabelaItem.getValueAt(i, 3).toString()));
+            obra.setCd_obra(Integer.parseInt(TabelaItem.getValueAt(i, 4).toString()));
+            obra.setTp_obra(Integer.parseInt(TabelaItem.getValueAt(i, 5).toString()));            
+            incluir(obra);
+
+        }
+    }
+    
+    public void incluir(ManutencaoMaterial pessoa) {
 
         try {
-            conecta_oracle.incluirSQL("INSERT INTO ESCULTURA_MATERIAIS (CD_MATERIAL,CD_OBRA,TP_OBRA,PS_MATERIAL) VALUES ("
+            conecta_oracle.incluirSQL("INSERT INTO ESCULTURA_MATERIAIS (CD_MATERIAL,CD_OBRA,TP_OBRA,QT_MATERIAL) VALUES ("
                     + pessoa.getCd_material()
                     + ", " + pessoa.getCd_obra()
                     + ", " + pessoa.getTp_obra()
-                    + ", " + pessoa.getPs_material()
+                    + ", " + pessoa.getQt_material()
                     + ")"
             );
         } catch (Exception e) {

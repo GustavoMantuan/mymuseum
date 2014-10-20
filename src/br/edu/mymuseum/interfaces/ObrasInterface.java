@@ -177,6 +177,7 @@ public class ObrasInterface extends javax.swing.JFrame {
         jLabel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         cd_obra.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        cd_obra.setEnabled(false);
 
         jLabel4.setText("Tipo de Obra");
 
@@ -236,7 +237,7 @@ public class ObrasInterface extends javax.swing.JFrame {
                 .addComponent(Excluir)
                 .addGap(57, 57, 57)
                 .addComponent(Cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,6 +303,11 @@ public class ObrasInterface extends javax.swing.JFrame {
 
         jButton2.setText("-");
         jButton2.setEnabled(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         codmaterial.setEnabled(false);
         codmaterial.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -484,7 +490,7 @@ public class ObrasInterface extends javax.swing.JFrame {
             daoobra.incluir(pintura);
         } else if (tp_obra.getSelectedIndex() == 2) {
             daoobra.incluir(escultura);
-            daoesculturamaterial.gravar(esculturamaterial,Integer.parseInt(cd_obra.getText()),2);
+           // daoesculturamaterial.gravar(esculturamaterial,Integer.parseInt(cd_obra.getText()),2);
         }
 
         // TODO add your handling code here:
@@ -527,7 +533,7 @@ public class ObrasInterface extends javax.swing.JFrame {
             psmaterial.setEnabled(true);
             jLabel8.setEnabled(true);
             jLabel9.setEnabled(true);
-            
+            jTable2.setEnabled(true);
             ds_estilo.setEnabled(false);
 
         } else {
@@ -573,8 +579,9 @@ public class ObrasInterface extends javax.swing.JFrame {
         esculturamaterial.setPs_material(Integer.parseInt(psmaterial.getText()));
         esculturamaterial.setTotal(Integer.parseInt(psmaterial.getText()));
         esculturamaterial.setTabela(jTable2);
-        ds_estilo.setText(Integer.toString(esculturamaterial.getTotal()));
         daoesculturamaterial.incluiritens(esculturamaterial);
+        daoesculturamaterial.calcultatotal(esculturamaterial);
+        ds_estilo.setText(Integer.toString(esculturamaterial.getTotal()));
         codmaterial.setText("");
         psmaterial.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -589,6 +596,13 @@ public class ObrasInterface extends javax.swing.JFrame {
             jButton2.setEnabled(false);
         }
     }//GEN-LAST:event_psmaterialFocusLost
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        daoesculturamaterial.excluiitens(esculturamaterial);
+        daoesculturamaterial.calcultatotal(esculturamaterial);
+        ds_estilo.setText(Integer.toString(esculturamaterial.getTotal()));
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

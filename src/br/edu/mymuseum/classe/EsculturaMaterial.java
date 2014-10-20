@@ -77,7 +77,7 @@ public class EsculturaMaterial {
     }
 
     public void setTotal(int total) {        
-        this.total += total;
+        this.total = total;
     }
 
     public JTable getTabela() {
