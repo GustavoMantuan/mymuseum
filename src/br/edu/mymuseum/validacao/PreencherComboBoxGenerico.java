@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class PreencherComboBoxGenerico {
 
-    ArrayList<String> array = new ArrayList<String>();
+   
 
 //    public void PreencherComboBoxGenerico(JComboBox combo, String campo, ResultSet retorno, String atributo_array, ClasseCidade cidade) {
 //        DefaultComboBoxModel modelo = (DefaultComboBoxModel) combo.getModel();
@@ -37,16 +37,16 @@ public class PreencherComboBoxGenerico {
     public void PreencherComboBoxGenerico(JComboBox combo, String campo, String chave, ResultSet retorno) {
         DefaultComboBoxModel modelo = (DefaultComboBoxModel) combo.getModel();
         combo.removeAllItems();
-
+         combo.addItem("Todos");
         try {
             while (retorno.next()) {
-                combo.addItem(retorno.getString(chave) + " - " + retorno.getString(campo));
-                array.add(retorno.getInt(chave), retorno.getString(campo));
+                combo.addItem(retorno.getString(chave) + "-" + retorno.getString(campo));
+               
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Dados não Encontrados");
         }
-        combo.addItem("Escolha");
+       
 
     }
 

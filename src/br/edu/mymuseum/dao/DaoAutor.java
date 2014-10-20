@@ -72,8 +72,8 @@ public class DaoAutor {
 //        pessoa.setRetorno(conecta_oracle.resultset);
 //    }
 //
-//    public void consultaPessoa(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE DS_PESSOA LIKE '%" + pessoa.getDs_pessoa()+ "%'");
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
+    public void consultaPessoa(Autor pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM AUTORES WHERE NM_AUTOR LIKE '%" + pessoa.getNm_autor()+ "%'");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
 }

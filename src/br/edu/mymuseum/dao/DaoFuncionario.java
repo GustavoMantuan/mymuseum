@@ -82,11 +82,20 @@ public class DaoFuncionario {
 //        }
 //    }
 
-//    public void consultaGeral(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA");
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
-//
+    public void consultaGeral(Funcionario pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM FUNCIONARIO");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+
+    public void consultaGuardinha(Guardinha pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM FUNCIONARIO WHERE TP_FUNCIONARIO = 2");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+
+    public void consultaReparador(Restaurador pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM FUNCIONARIO WHERE TP_FUNCIONARIO = 1");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
 //    public void consultaCodigo(Pessoa pessoa) {
 //        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
 //        pessoa.setRetorno(conecta_oracle.resultset);

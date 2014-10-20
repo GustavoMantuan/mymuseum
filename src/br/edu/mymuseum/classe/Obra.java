@@ -5,6 +5,9 @@
  */
 package br.edu.mymuseum.classe;
 
+import java.sql.ResultSet;
+import javax.swing.JTable;
+
 /**
  *
  * @author Dorga
@@ -17,6 +20,8 @@ public class Obra {
        private int cd_salao;
        private String ti_obra;
        private int ano_obra;
+       private ResultSet retorno;
+       private JTable tabela;
 
     public int getCd_obra() {
         return cd_obra;
@@ -72,6 +77,34 @@ public class Obra {
 
     public void setAno_obra(int ano_obra) {
         this.ano_obra = ano_obra;
+    }
+
+    /**
+     * @return the retorno
+     */
+    public ResultSet getRetorno() {
+        return retorno;
+    }
+
+    /**
+     * @param retorno the retorno to set
+     */
+    public void setRetorno(ResultSet retorno) {
+        this.retorno = retorno;
+    }
+
+    /**
+     * @return the tabela
+     */
+    public JTable getTabela() {
+        return tabela;
+    }
+
+    /**
+     * @param tabela the tabela to set
+     */
+    public void setTabela(JTable tabela) {
+        this.tabela = tabela;
     }
        
     

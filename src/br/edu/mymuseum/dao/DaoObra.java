@@ -6,6 +6,7 @@ import br.edu.mymuseum.classe.Pintura;
 
 import br.edu.mymuseum.conexao.ConexaoOracle;
 import br.edu.mymuseum.validacao.UltimaSequencia;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -64,13 +65,14 @@ public class DaoObra {
     }
 
     public void alterar(Obra pessoa) {
-        conecta_oracle.atualizarSQL("UPDATE OBRAS SET TP_OBRA = '" + pessoa.getTp_obra()
-                + ", CD_AUTOR = " + pessoa.getCd_autor()
+        conecta_oracle.atualizarSQL("UPDATE OBRAS SET "
+                + "CD_AUTOR = " + pessoa.getCd_autor()
                 + ", CD_ANDAR = " + pessoa.getCd_andar()
                 + ", CD_SALAO = " + pessoa.getCd_salao()
                 + ", TI_OBRA = '" + pessoa.getTi_obra()
                 + "', ANO_OBRA = " + pessoa.getAno_obra()
-                + "'  WHERE CD_OBRA = " + pessoa.getCd_obra()
+                + "  WHERE CD_OBRA = " + pessoa.getCd_obra()
+                + " AND TP_OBRA = "+pessoa.getTp_obra()
         );
     }
 
@@ -94,14 +96,51 @@ public class DaoObra {
 //        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA");
 //        pessoa.setRetorno(conecta_oracle.resultset);
 //    }
-//
-//    public void consultaCodigo(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
-//
-//    public void consultaPessoa(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE DS_PESSOA LIKE '%" + pessoa.getDs_pessoa()+ "%'");
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
+public void grava_itens(Obra obra) {
+        DefaultTableModel TabelaItem = (DefaultTableModel) obra.getTabela().getModel();
+        int totalinha = obra.getTabela().getRowCount();
+        for (int i = 0; i < totalinha; i++) {
+            obra.setCd_obra(Integer.parseInt(TabelaItem.getValueAt(i, 0).toString()));
+            obra.setTp_obra(Integer.parseInt(TabelaItem.getValueAt(i, 1).toString()));
+            obra.setAno_obra(Integer.parseInt(TabelaItem.getValueAt(i, 2).toString()));
+            obra.setTi_obra(TabelaItem.getValueAt(i, 3).toString());
+            obra.setCd_salao(Integer.parseInt(TabelaItem.getValueAt(i, 4).toString()));
+            obra.setCd_andar(Integer.parseInt(TabelaItem.getValueAt(i, 5).toString()));
+            obra.setCd_autor(Integer.parseInt(TabelaItem.getValueAt(i, 6).toString()));
+            alterar(obra);
+
+        }
+    }
+    
+    public void consultaCd(Obra pessoa){
+        conecta_oracle.executeSQL("SELECT TP_OBRA FROM OBRAS WHERE CD_OBRA = "+pessoa.getCd_obra());
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+    public void consultaCodigo(Obra pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM OBRAS WHERE CD_ANDAR = "+pessoa.getCd_andar()+" AND CD_SALAO = "+pessoa.getCd_salao());
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+    public void consultaCodigoTpAtor(Obra pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM OBRAS WHERE CD_ANDAR =  "+pessoa.getCd_andar()+" AND CD_SALAO = "+pessoa.getCd_salao()+" AND TP_OBRA = " + pessoa.getTp_obra()+ " AND CD_AUTOR = "+pessoa.getCd_autor());
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+    public void consultaCodigoAtor(Obra pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM OBRAS WHERE CD_ANDAR =  "+pessoa.getCd_andar()+" AND CD_SALAO = "+pessoa.getCd_salao()+" AND CD_AUTOR = "+pessoa.getCd_autor());
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+    public void consultaTpObra(Obra pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM OBRAS WHERE CD_ANDAR =  "+pessoa.getCd_andar()+" AND CD_SALAO = "+pessoa.getCd_salao()+" AND TP_OBRA = "+pessoa.getTp_obra());
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+
+    public void consultaGeral(Obra pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM OBRAS");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+    public void consultaObra(Obra obra){
+        conecta_oracle.executeSQL("SELECT * FROM OBRAS WHERE TI_OBRA LIKE '%" + obra.getTi_obra() + "%'");
+        obra.setRetorno(conecta_oracle.resultset);
+    }
+    
+    
 }
