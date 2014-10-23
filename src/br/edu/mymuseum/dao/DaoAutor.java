@@ -47,18 +47,17 @@ public class DaoAutor {
     public void excluir(Autor pessoa) {
         conecta_oracle.deleteSQL("DELETE FROM AUTORES WHERE CD_AUTOR = " + pessoa.getCd_autor());
     }
-//    public void retornardados(Funcionario pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
-//        try {
-//            conecta_oracle.resultset.first();
-//            pessoa.setCd_pessoa(conecta_oracle.resultset.getInt("CD_PESSOA"));
-//            pessoa.setDs_pessoa(conecta_oracle.resultset.getString("DS_PESSOA"));
-//            pessoa.setIn_ativo(conecta_oracle.resultset.getString("IN_ATIVO"));
-//            pessoa.setDt_cadastro(conecta_oracle.resultset.getString("DT_CADASTRO"));
-//          
-//        } catch (Exception e) {
-//        }
-//    }
+    public void retornardados(Autor pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM AUTORES WHERE CD_AUTOR = " + pessoa.getCd_autor());
+        try {
+            conecta_oracle.resultset.first();
+            pessoa.setCd_autor(conecta_oracle.resultset.getInt("CD_AUTOR"));
+            pessoa.setNm_autor(conecta_oracle.resultset.getString("NM_AUTOR"));
+            pessoa.setNc_autor(conecta_oracle.resultset.getString("NC_AUTOR"));
+          
+        } catch (Exception e) {
+        }
+    }
 
     public void consultaGeral(Autor pessoa) {
         conecta_oracle.executeSQL("SELECT * FROM AUTORES");
@@ -66,12 +65,12 @@ public class DaoAutor {
     }
     
     
-//
-//    public void consultaCodigo(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
-//
+
+    public void consultaCodigo(Autor pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM AUTORES WHERE CD_AUTOR = " + pessoa.getCd_autor());
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+
     public void consultaPessoa(Autor pessoa) {
         conecta_oracle.executeSQL("SELECT * FROM AUTORES WHERE NM_AUTOR LIKE '%" + pessoa.getNm_autor()+ "%'");
         pessoa.setRetorno(conecta_oracle.resultset);

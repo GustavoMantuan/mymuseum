@@ -62,25 +62,64 @@ public class DaoFuncionario {
                 + "', TP_FUNCIONARIO = " + pessoa.getTp_funcinario()
                 + ", SL_FUNCIONARIO = " + pessoa.getSl_funcionario()
                 + ", CPF = " + pessoa.getCpf()
-                + "'  WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario()
+                + " WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario()
         );
     }
 
-    public void excluir(Funcionario pessoa) {
-        conecta_oracle.deleteSQL("DELETE FROM FUNCIONARIO WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario());
+    public void alterar(Restaurador pessoa) {
+        conecta_oracle.atualizarSQL("UPDATE RESTAURADOR SET ESPECIALIDADE = '" + pessoa.getEspecialidade() + "' WHERE CD_FUNCIONARIO = "
+                +pessoa.getCd_funcionario());
     }
-//    public void retornardados(Funcionario pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
-//        try {
-//            conecta_oracle.resultset.first();
-//            pessoa.setCd_pessoa(conecta_oracle.resultset.getInt("CD_PESSOA"));
-//            pessoa.setDs_pessoa(conecta_oracle.resultset.getString("DS_PESSOA"));
-//            pessoa.setIn_ativo(conecta_oracle.resultset.getString("IN_ATIVO"));
-//            pessoa.setDt_cadastro(conecta_oracle.resultset.getString("DT_CADASTRO"));
-//          
-//        } catch (Exception e) {
-//        }
-//    }
+    
+     public void alterar(Guardinha pessoa) {
+        conecta_oracle.atualizarSQL("UPDATE GUARDINHA SET TT_GUARDAS = '" + pessoa.getTt_guardas()+ "' WHERE CD_FUNCIONARIO = "
+                +pessoa.getCd_funcionario());
+    }
+
+    public void excluir(Funcionario pessoa) {
+        try {
+            conecta_oracle.deleteSQL("DELETE FROM RESTAURADOR WHERE CD_FUNCIONARIO =" + pessoa.getCd_funcionario());
+        } catch (Exception ex) {
+            conecta_oracle.deleteSQL("DELETE FROM GUARDINHA WHERE CD_FUNCIONARIO =" + pessoa.getCd_funcionario());
+        }
+        conecta_oracle.deleteSQL("DELETE FROM FUNCIONARIO WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario());
+        
+    }
+
+    public void retornardados(Funcionario pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM FUNCIONARIO WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario());
+        try {
+            conecta_oracle.resultset.first();
+            pessoa.setCd_funcionario(conecta_oracle.resultset.getInt("CD_FUNCIONARIO"));
+            pessoa.setCpf(conecta_oracle.resultset.getLong("CPF"));
+            pessoa.setNm_funcionario(conecta_oracle.resultset.getString("NM_FUNCIONARIO"));
+            pessoa.setSl_funcionario(conecta_oracle.resultset.getDouble("SL_FUNCIONARIO"));
+            pessoa.setTp_funcinario(conecta_oracle.resultset.getInt("TP_FUNCIONARIO"));
+        } catch (Exception e) {
+        }
+    }
+
+    public void retornardados(Restaurador pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM RESTAURADOR WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario());
+        try {
+            conecta_oracle.resultset.first();
+            pessoa.setCd_funcionario(conecta_oracle.resultset.getInt("CD_FUNCIONARIO"));
+            pessoa.setEspecialidade(conecta_oracle.resultset.getString("ESPECIALIDADE"));
+
+        } catch (Exception e) {
+        }
+    }
+
+    public void retornardados(Guardinha pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM GUARDINHA WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario());
+        try {
+            conecta_oracle.resultset.first();
+            pessoa.setCd_funcionario(conecta_oracle.resultset.getInt("CD_FUNCIONARIO"));
+            pessoa.setTt_guardas(conecta_oracle.resultset.getDouble("TT_GUARDAS"));
+
+        } catch (Exception e) {
+        }
+    }
 
     public void consultaGeral(Funcionario pessoa) {
         conecta_oracle.executeSQL("SELECT * FROM FUNCIONARIO");
@@ -96,13 +135,14 @@ public class DaoFuncionario {
         conecta_oracle.executeSQL("SELECT * FROM FUNCIONARIO WHERE TP_FUNCIONARIO = 1");
         pessoa.setRetorno(conecta_oracle.resultset);
     }
-//    public void consultaCodigo(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
-//
-//    public void consultaPessoa(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE DS_PESSOA LIKE '%" + pessoa.getDs_pessoa()+ "%'");
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
+
+    public void consultaCodigo(Funcionario pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM FUNCIONARIO WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario());
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+
+    public void consultaPessoa(Funcionario pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM FUNCIONARIO WHERE NM_FUNCIONARIO LIKE '%" + pessoa.getNm_funcionario() + "%'");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
 }

@@ -3,6 +3,9 @@ package br.edu.mymuseum.dao;
 import br.edu.mymuseum.classe.EsculturaMaterial;
 
 import br.edu.mymuseum.conexao.ConexaoOracle;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,7 +22,7 @@ public class DaoEsculturaMaterial {
     }
 
     public void incluiritens(EsculturaMaterial escultura) {
-         DefaultTableModel TabelaItem = (DefaultTableModel) escultura.getTabela().getModel();
+        DefaultTableModel TabelaItem = (DefaultTableModel) escultura.getTabela().getModel();
         double soma = 0;
         int totalinha = escultura.getTabela().getRowCount();
         int alterar = 0;
@@ -44,16 +47,16 @@ public class DaoEsculturaMaterial {
             TabelaItem.setValueAt(escultura.getCd_material(), totalinha, 1);
             TabelaItem.setValueAt(escultura.getDs_material(), totalinha, 2);
             TabelaItem.setValueAt(escultura.getPs_material(), totalinha, 3);
-           
+
         } else if (alterar == 1) {
             TabelaItem.setValueAt(escultura.getPs_material(), linha, 3);
         }
 //
 //        escultura.setVl_total_item(escultura.getVl_item() * escultura.getQt_item());
 //        calcultatotal(escultura);
-        
+
     }
-    
+
     public void excluiitens(EsculturaMaterial classe) {
         DefaultTableModel tabela = (DefaultTableModel) classe.getTabela().getModel();
         int totlinha = tabela.getRowCount();
@@ -75,35 +78,64 @@ public class DaoEsculturaMaterial {
         }
 
     }
-    
+
     public void calcultatotal(EsculturaMaterial classe) {
         int totlinha = classe.getTabela().getRowCount();
-       
+
         int total = 0;
-        for (int i = 0; i < totlinha; i++) {           
-            int valor = (Integer) classe.getTabela().getValueAt(i, 3);         
+        for (int i = 0; i < totlinha; i++) {
+            int valor = (Integer) classe.getTabela().getValueAt(i, 3);
             total += valor;
         }
         classe.setTotal(total);
         System.out.println(total);
     }
-    
-    public void gravar(EsculturaMaterial escultura,int cd_obra,int tp_obra){
-        
+
+    public void gravar(EsculturaMaterial escultura, int cd_obra, int tp_obra) {
+        DefaultTableModel TabelaItem = (DefaultTableModel) escultura.getTabela().getModel();
+        int totalinha = escultura.getTabela().getRowCount();
+        int conta = 0;
+        int linha = 0;
+
+        for (int i = 0; i < totalinha; i++) {
+            escultura.setCd_obra(cd_obra);
+            escultura.setTp_obra(tp_obra);
+            escultura.setCd_material(Integer.parseInt(TabelaItem.getValueAt(i, 1).toString()));
+            escultura.setPs_material(Integer.parseInt(TabelaItem.getValueAt(i, 3).toString()));
+            incluir(escultura);
+        }
+
     }
 
-    public void incluir(EsculturaMaterial pessoa) {
+    public void incluir(EsculturaMaterial escultura) {
 
         try {
             conecta_oracle.incluirSQL("INSERT INTO ESCULTURA_MATERIAIS (CD_MATERIAL,CD_OBRA,TP_OBRA,PS_MATERIAL) VALUES ("
-                    + pessoa.getCd_material()
-                    + ", " + pessoa.getCd_obra()
-                    + ", " + pessoa.getTp_obra()
-                    + ", " + pessoa.getPs_material()
+                    + escultura.getCd_material()
+                    + ", " + escultura.getCd_obra()
+                    + ", " + escultura.getTp_obra()
+                    + ", " + escultura.getPs_material()
                     + ")"
             );
         } catch (Exception e) {
         }
+    }
+
+    public void consultaCodigo(EsculturaMaterial pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM ESCULTURA_MATERIAIS WHERE CD_OBRA = " + pessoa.getCd_obra() + "AND TP_OBRA = " + pessoa.getTp_obra());
+        pessoa.setRetorno(conecta_oracle.resultset);
+        
+        while (pessoa.getRetorno() != null) {
+            try {
+                pessoa.getRetorno().next();
+                pessoa.setCd_material(pessoa.getRetorno().getInt("CD_MATERIAL"));
+                pessoa.setPs_material(pessoa.getRetorno().getInt("PS_MATERIAL"));
+                incluiritens(pessoa);
+            } catch (SQLException ex) {
+                Logger.getLogger(DaoObra.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     public void alterar(EsculturaMaterial pessoa) {

@@ -9,6 +9,7 @@ import br.edu.mymuseum.dao.DaoAutor;
 import br.edu.mymuseum.classe.Material;
 import br.edu.mymuseum.dao.DaoMaterial;
 import br.edu.mymuseum.validacao.LimparCampos;
+import br.edu.mymuseum.validacao.PreencherJtableGenerico;
 import br.edu.mymuseum.validacao.Rotinas;
 import br.edu.mymuseum.validacao.UltimaSequencia;
 import br.edu.mymuseum.validacao.ValidaBotoes;
@@ -27,6 +28,7 @@ public class MaterialInterface extends javax.swing.JFrame {
     UltimaSequencia ultima;
     int sequencia = 0;
     LimparCampos limparcampos = new LimparCampos();
+    PreencherJtableGenerico preenchertable = new PreencherJtableGenerico();
 
     public MaterialInterface() {
         initComponents();
@@ -57,6 +59,11 @@ public class MaterialInterface extends javax.swing.JFrame {
         Excluir = new javax.swing.JButton();
         Cancelar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jCbPesquisa = new javax.swing.JComboBox();
+        jTfPesquisa = new javax.swing.JTextField();
+        jBtPesquisar = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTbPesquisa2 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,6 +101,11 @@ public class MaterialInterface extends javax.swing.JFrame {
         });
 
         Excluir.setText("Excluir");
+        Excluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExcluirActionPerformed(evt);
+            }
+        });
 
         Cancelar.setText("Cancelar");
         Cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -176,15 +188,67 @@ public class MaterialInterface extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Cadastro", jPanel1);
 
+        jCbPesquisa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Geral" }));
+
+        jBtPesquisar.setText("Pesquisar");
+        jBtPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtPesquisarActionPerformed(evt);
+            }
+        });
+
+        jTbPesquisa2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código", "Nome", "Quantidade"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTbPesquisa2.setToolTipText("");
+        jTbPesquisa2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTbPesquisa2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTbPesquisa2MouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTbPesquisa2);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jCbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTfPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jBtPesquisar))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 164, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTfPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBtPesquisar))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consulta", jPanel2);
@@ -193,11 +257,11 @@ public class MaterialInterface extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -225,8 +289,11 @@ public class MaterialInterface extends javax.swing.JFrame {
 
     private void GravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GravarActionPerformed
         getcomp();
-        daomaterial.incluir(material);
-        
+        if (situacao == Rotinas.INCLUIR) {
+            daomaterial.incluir(material);
+        } else if (situacao == Rotinas.ALTERAR) {
+            daomaterial.alterar(material);
+        }
 
         // TODO add your handling code here:
     }//GEN-LAST:event_GravarActionPerformed
@@ -237,6 +304,44 @@ public class MaterialInterface extends javax.swing.JFrame {
         limparcampos.LimparCampos(jPanel1);
         // TODO add your handling code here:
     }//GEN-LAST:event_CancelarActionPerformed
+
+    private void jBtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtPesquisarActionPerformed
+        // TODO add your handling code here:
+        switch (jCbPesquisa.getSelectedIndex()) {
+            case 0:
+                daomaterial.consultaGeral(material);
+                preenchertable.PreencherJtableGenerico(jTbPesquisa2, new String[]{"CD_MATERIAL", "NM_MATERIA", "QT_ESTOQUE"}, material.getRetorno());
+
+                break;
+
+        }
+    }//GEN-LAST:event_jBtPesquisarActionPerformed
+
+    private void jTbPesquisa2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTbPesquisa2MouseClicked
+        if (evt.getClickCount() == 2) {
+            int linha = jTbPesquisa2.getSelectedRow();
+            String valor = (String) jTbPesquisa2.getValueAt(linha, 0);
+            material.setCd_material(Integer.parseInt(valor));
+            daomaterial.retornardados(material);
+            setcomp();
+            jPanel1.getCursor();
+        }
+    }//GEN-LAST:event_jTbPesquisa2MouseClicked
+
+    private void ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirActionPerformed
+        // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(null, "Confirma a exclusão do registro") == 0) {
+            if (!cd_material.getText().equals("")) {
+                material.setCd_material(Integer.parseInt(cd_material.getText()));
+                daomaterial.excluir(material);
+            } else {
+                JOptionPane.showMessageDialog(null, "Informe o Código do Autor");
+
+            }
+
+        }
+
+    }//GEN-LAST:event_ExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -287,23 +392,33 @@ public class MaterialInterface extends javax.swing.JFrame {
     public javax.swing.JButton Gravar;
     public javax.swing.JButton Novo;
     public javax.swing.JTextField cd_material;
+    public javax.swing.JButton jBtPesquisar;
+    public javax.swing.JComboBox jCbPesquisa;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel6;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
     public javax.swing.JPanel jPanel3;
+    public javax.swing.JScrollPane jScrollPane5;
     public javax.swing.JTabbedPane jTabbedPane1;
+    public javax.swing.JTable jTbPesquisa2;
+    public javax.swing.JTextField jTfPesquisa;
     public javax.swing.JTextField nm_materia;
     public javax.swing.JTextField qt_estoque;
     // End of variables declaration//GEN-END:variables
 
     public void getcomp() {
-        if (situacao == Rotinas.INCLUIR) {
-           material.setCd_material(Integer.parseInt(cd_material.getText()));
-           material.setNm_materia(nm_materia.getText());
-           material.setQt_estoque(Double.parseDouble(qt_estoque.getText()));
 
-        }
+        material.setCd_material(Integer.parseInt(cd_material.getText()));
+        material.setNm_materia(nm_materia.getText());
+        material.setQt_estoque(Double.parseDouble(qt_estoque.getText()));
+
+    }
+
+    public void setcomp() {
+        cd_material.setText(Integer.toString(material.getCd_material()));
+        nm_materia.setText(material.getNm_materia());
+        qt_estoque.setText(Double.toString(material.getQt_estoque()));
     }
 }

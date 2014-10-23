@@ -10,6 +10,7 @@ import br.edu.mymuseum.classe.Guardinha;
 import br.edu.mymuseum.classe.Restaurador;
 import br.edu.mymuseum.dao.DaoFuncionario;
 import br.edu.mymuseum.validacao.LimparCampos;
+import br.edu.mymuseum.validacao.PreencherJtableGenerico;
 import br.edu.mymuseum.validacao.Rotinas;
 import br.edu.mymuseum.validacao.UltimaSequencia;
 import br.edu.mymuseum.validacao.ValidaBotoes;
@@ -30,9 +31,11 @@ public class Func extends javax.swing.JFrame {
     UltimaSequencia ultima;
     int sequencia = 0;
     LimparCampos limparcampos = new LimparCampos();
+    PreencherJtableGenerico preenchertable = new PreencherJtableGenerico();
+
     public Func() {
         initComponents();
-        validabotoes.ValidaEstado(jPanel3, Rotinas.PADRÃO);        
+        validabotoes.ValidaEstado(jPanel3, Rotinas.PADRÃO);
     }
 
     /**
@@ -65,8 +68,13 @@ public class Func extends javax.swing.JFrame {
         especialidade = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jCbPesquisa = new javax.swing.JComboBox();
+        jTfPesquisa = new javax.swing.JTextField();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTbPesquisa2 = new javax.swing.JTable();
+        jBtPesquisar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Nome");
 
@@ -113,6 +121,11 @@ public class Func extends javax.swing.JFrame {
         });
 
         Excluir.setText("Excluir");
+        Excluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExcluirActionPerformed(evt);
+            }
+        });
 
         Cancelar.setText("Cancelar");
         Cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -177,9 +190,7 @@ public class Func extends javax.swing.JFrame {
                                     .addComponent(jLabel1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel2)
                                     .addComponent(cpf))))
                         .addGap(10, 10, 10))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -221,21 +232,72 @@ public class Func extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sl_funcionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jTabbedPane1.addTab("Cadastro", jPanel1);
 
+        jCbPesquisa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Geral", "Código", "Titulo" }));
+
+        jTbPesquisa2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código", "Tipo", "Nome", "Salario", "Cpf"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTbPesquisa2.setToolTipText("");
+        jTbPesquisa2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTbPesquisa2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTbPesquisa2MouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTbPesquisa2);
+
+        jBtPesquisar.setText("Pesquisar");
+        jBtPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtPesquisarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jCbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTfPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBtPesquisar))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTfPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBtPesquisar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consulta", jPanel2);
@@ -248,7 +310,7 @@ public class Func extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
         );
 
         pack();
@@ -276,16 +338,32 @@ public class Func extends javax.swing.JFrame {
 
     private void GravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GravarActionPerformed
         getcomp();
-        daofuncionario.incluir(funcionario);
-        if (funcionario.getTp_funcinario() == 1) {
-            restaurador.setCd_funcionario(sequencia);
-            restaurador.setEspecialidade(especialidade.getText());
-            daofuncionario.incluir(restaurador);
-        } else if (funcionario.getTp_funcinario() == 2) {
-            guarda.setCd_funcionario(sequencia);
-            guarda.setTt_guardas(Double.parseDouble(especialidade.getText()));
-            daofuncionario.incluir(guarda);
+        if (situacao == Rotinas.INCLUIR) {
+            daofuncionario.incluir(funcionario);
+            if (funcionario.getTp_funcinario() == 1) {
+                restaurador.setCd_funcionario(sequencia);
+                restaurador.setEspecialidade(especialidade.getText());
+                daofuncionario.incluir(restaurador);
+            } else if (funcionario.getTp_funcinario() == 2) {
+                guarda.setCd_funcionario(sequencia);
+                guarda.setTt_guardas(Double.parseDouble(especialidade.getText()));
+                daofuncionario.incluir(guarda);
+            }
+        }else if (situacao == Rotinas.ALTERAR){
+            daofuncionario.alterar(funcionario);
+            if (funcionario.getTp_funcinario() == 1) {
+                restaurador.setCd_funcionario(Integer.parseInt(cd_funcionario.getText()));
+                restaurador.setEspecialidade(especialidade.getText());
+                daofuncionario.alterar(restaurador);
+            } else if (funcionario.getTp_funcinario() == 2) {
+                guarda.setCd_funcionario(Integer.parseInt(cd_funcionario.getText()));
+                guarda.setTt_guardas(Double.parseDouble(especialidade.getText()));
+                daofuncionario.alterar(guarda);
+            }
         }
+        situacao = Rotinas.PADRÃO;
+        limparcampos.LimparCampos(jPanel1);
+        validabotoes.ValidaEstado(jPanel3, situacao);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_GravarActionPerformed
@@ -311,6 +389,53 @@ public class Func extends javax.swing.JFrame {
         limparcampos.LimparCampos(jPanel1);
         // TODO add your handling code here:
     }//GEN-LAST:event_CancelarActionPerformed
+
+    private void jTbPesquisa2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTbPesquisa2MouseClicked
+        if (evt.getClickCount() == 2) {
+            int linha = jTbPesquisa2.getSelectedRow();
+            String valor = (String) jTbPesquisa2.getValueAt(linha, 0);
+            funcionario.setCd_funcionario(Integer.parseInt(valor));
+            daofuncionario.retornardados(funcionario);
+            setcomp();
+            jPanel1.getCursor();
+        }
+    }//GEN-LAST:event_jTbPesquisa2MouseClicked
+
+    private void jBtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtPesquisarActionPerformed
+        // TODO add your handling code here:
+        switch (jCbPesquisa.getSelectedIndex()) {
+            case 0:
+                daofuncionario.consultaGeral(funcionario);
+                preenchertable.PreencherJtableGenerico(jTbPesquisa2, new String[]{"CD_FUNCIONARIO", "TP_FUNCIONARIO", "NM_FUNCIONARIO", "SL_FUNCIONARIO", "CPF"}, funcionario.getRetorno());
+                break;
+            case 1:
+                funcionario.setCd_funcionario(Integer.parseInt(jTfPesquisa.getText()));
+                daofuncionario.consultaCodigo(funcionario);
+                preenchertable.PreencherJtableGenerico(jTbPesquisa2, new String[]{"CD_FUNCIONARIO", "TP_FUNCIONARIO", "NM_FUNCIONARIO", "SL_FUNCIONARIO", "CPF"}, funcionario.getRetorno());
+                break;
+            case 2:
+                funcionario.setNm_funcionario(jTfPesquisa.getText());
+                daofuncionario.consultaPessoa(funcionario);
+                preenchertable.PreencherJtableGenerico(jTbPesquisa2, new String[]{"CD_FUNCIONARIO", "TP_FUNCIONARIO", "NM_FUNCIONARIO", "SL_FUNCIONARIO", "CPF"}, funcionario.getRetorno());
+
+                break;
+        }
+    }//GEN-LAST:event_jBtPesquisarActionPerformed
+
+    private void ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirActionPerformed
+        // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(null, "Confirma a exclusão do registro") == 0) {
+            if (!cd_funcionario.getText().equals("")) {
+                funcionario.setCd_funcionario(Integer.parseInt(cd_funcionario.getText()));
+                
+                daofuncionario.excluir(funcionario);
+            } else {
+                JOptionPane.showMessageDialog(null, "Informe o Código do Funcionário");
+
+            }
+
+        }
+    }//GEN-LAST:event_ExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -356,6 +481,8 @@ public class Func extends javax.swing.JFrame {
     public javax.swing.JTextField cd_funcionario;
     public javax.swing.JTextField cpf;
     public javax.swing.JTextField especialidade;
+    public javax.swing.JButton jBtPesquisar;
+    public javax.swing.JComboBox jCbPesquisa;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
@@ -365,26 +492,47 @@ public class Func extends javax.swing.JFrame {
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
     public javax.swing.JPanel jPanel3;
+    public javax.swing.JScrollPane jScrollPane5;
     public javax.swing.JTabbedPane jTabbedPane1;
+    public javax.swing.JTable jTbPesquisa2;
+    public javax.swing.JTextField jTfPesquisa;
     public javax.swing.JTextField nm_funcionario;
     public javax.swing.JTextField sl_funcionario;
     public javax.swing.JComboBox tp_funcionario;
     // End of variables declaration//GEN-END:variables
 
     public void getcomp() {
-        if (situacao == Rotinas.INCLUIR) {
-            funcionario.setCd_funcionario(Integer.parseInt(cd_funcionario.getText()));
-            funcionario.setNm_funcionario(nm_funcionario.getText());
-            funcionario.setCpf(Long.parseLong(cpf.getText()));
-            funcionario.setSl_funcionario(Double.parseDouble(sl_funcionario.getText()));
-            if (tp_funcionario.getSelectedIndex() == 1) {
-                funcionario.setTp_funcinario(1);
-            } else if (tp_funcionario.getSelectedIndex() == 2) {
-                funcionario.setTp_funcinario(2);
-            } else {
-                JOptionPane.showMessageDialog(null, "Escolha um tipo de funcionário");
-            }
 
+        funcionario.setCd_funcionario(Integer.parseInt(cd_funcionario.getText()));
+
+        funcionario.setNm_funcionario(nm_funcionario.getText());
+        funcionario.setCpf(Long.parseLong(cpf.getText()));
+        funcionario.setSl_funcionario(Double.parseDouble(sl_funcionario.getText()));
+        if (tp_funcionario.getSelectedIndex() == 1) {
+            funcionario.setTp_funcinario(1);
+        } else if (tp_funcionario.getSelectedIndex() == 2) {
+            funcionario.setTp_funcinario(2);
+        } else {
+            JOptionPane.showMessageDialog(null, "Escolha um tipo de funcionário");
+        }
+
+    }
+
+    public void setcomp() {
+        cd_funcionario.setText(Integer.toString(funcionario.getCd_funcionario()));
+        nm_funcionario.setText(funcionario.getNm_funcionario());
+        sl_funcionario.setText(Double.toString(funcionario.getSl_funcionario()));
+        cpf.setText(Long.toString(funcionario.getCpf()));
+        if (funcionario.getTp_funcinario() == 1) {
+            tp_funcionario.setSelectedIndex(1);
+            restaurador.setCd_funcionario(funcionario.getCd_funcionario());
+            daofuncionario.retornardados(restaurador);
+            especialidade.setText(restaurador.getEspecialidade());
+        } else if (funcionario.getTp_funcinario() == 2) {
+            tp_funcionario.setSelectedIndex(2);
+            guarda.setCd_funcionario(funcionario.getCd_funcionario());
+            daofuncionario.retornardados(guarda);
+            especialidade.setText(Double.toString(guarda.getTt_guardas()));
         }
     }
 }

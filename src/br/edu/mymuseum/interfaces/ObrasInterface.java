@@ -19,6 +19,7 @@ import br.edu.mymuseum.dao.DaoObra;
 import br.edu.mymuseum.dao.DaoSalao;
 import br.edu.mymuseum.validacao.LimparCampos;
 import br.edu.mymuseum.validacao.PreencherComboBoxGenerico;
+import br.edu.mymuseum.validacao.PreencherJtableGenerico;
 import br.edu.mymuseum.validacao.Rotinas;
 import br.edu.mymuseum.validacao.UltimaSequencia;
 import br.edu.mymuseum.validacao.ValidaBotoes;
@@ -51,6 +52,7 @@ public class ObrasInterface extends javax.swing.JFrame {
     int sequencia = 0;
     LimparCampos limparcampos = new LimparCampos();
     PreencherComboBoxGenerico preenchecombo = new PreencherComboBoxGenerico();
+    PreencherJtableGenerico preenchertable = new PreencherJtableGenerico();
 
     public ObrasInterface() {
         initComponents();
@@ -101,6 +103,11 @@ public class ObrasInterface extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jCbPesquisa = new javax.swing.JComboBox();
+        jTfPesquisa = new javax.swing.JTextField();
+        jBtPesquisar = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTbPesquisa2 = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -214,6 +221,11 @@ public class ObrasInterface extends javax.swing.JFrame {
         });
 
         Excluir.setText("Excluir");
+        Excluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExcluirActionPerformed(evt);
+            }
+        });
 
         Cancelar.setText("Cancelar");
         Cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -449,15 +461,67 @@ public class ObrasInterface extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Cadastro", jPanel1);
 
+        jCbPesquisa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Geral", "Código", "Titulo" }));
+
+        jBtPesquisar.setText("Pesquisar");
+        jBtPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtPesquisarActionPerformed(evt);
+            }
+        });
+
+        jTbPesquisa2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código", "Tipo", "Titulo", "Ano", "Ator", "Salao", "Andar"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTbPesquisa2.setToolTipText("");
+        jTbPesquisa2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTbPesquisa2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTbPesquisa2MouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTbPesquisa2);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 656, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jCbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTfPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jBtPesquisar)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCbPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTfPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBtPesquisar))
+                .addGap(41, 41, 41)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(231, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consulta", jPanel2);
@@ -485,13 +549,27 @@ public class ObrasInterface extends javax.swing.JFrame {
 
     private void GravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GravarActionPerformed
         getcomp();
-        daoobra.incluir(obra);
-        if (tp_obra.getSelectedIndex() == 1) {            
-            daoobra.incluir(pintura);
-        } else if (tp_obra.getSelectedIndex() == 2) {
-            daoobra.incluir(escultura);
-           // daoesculturamaterial.gravar(esculturamaterial,Integer.parseInt(cd_obra.getText()),2);
+        if (situacao == Rotinas.INCLUIR) {
+            daoobra.incluir(obra);
+            if (tp_obra.getSelectedIndex() == 1) {
+                daoobra.incluir(pintura);
+            } else if (tp_obra.getSelectedIndex() == 2) {
+                daoobra.incluir(escultura);
+                esculturamaterial.setTabela(jTable2);
+                daoesculturamaterial.gravar(esculturamaterial, Integer.parseInt(cd_obra.getText()), 2);
+            }
+        } else if (situacao == Rotinas.ALTERAR) {
+            daoobra.alterar(obra);
+            if (tp_obra.getSelectedIndex() == 1) {
+                daoobra.alterar(pintura);
+            } else if (tp_obra.getSelectedIndex() == 2) {
+                daoobra.alterar(escultura);
+                // daoesculturamaterial.gravar(esculturamaterial, Integer.parseInt(cd_obra.getText()), 2);
+            }
         }
+        situacao = Rotinas.PADRÃO;
+        validabotoes.ValidaEstado(jPanel3, situacao);
+        limparcampos.LimparCampos(jPanel3);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_GravarActionPerformed
@@ -522,13 +600,18 @@ public class ObrasInterface extends javax.swing.JFrame {
             jLabel7.setEnabled(true);
             jLabel7.setText("Escolha o estilo da pintura");
             ds_estilo.setEnabled(true);
-           
+         
+            codmaterial.setEnabled(false);
+            psmaterial.setEnabled(false);
+            
+            jTable2.setEnabled(false);
+            ds_estilo.setEnabled(false);
 
         } else if (tp_obra.getSelectedIndex() == 2) {
             jLabel7.setEnabled(true);
             jLabel7.setText("Peso Total da Escultura");
             ds_estilo.setEnabled(true);
-            jTabbedPane1.setEnabled(true);
+           
             codmaterial.setEnabled(true);
             psmaterial.setEnabled(true);
             jLabel8.setEnabled(true);
@@ -540,7 +623,6 @@ public class ObrasInterface extends javax.swing.JFrame {
             jLabel7.setEnabled(false);
             jLabel7.setText("Escolha o estilo da pintura");
             ds_estilo.setEnabled(false);
-           
 
         }
         // TODO add your handling code here:
@@ -588,10 +670,10 @@ public class ObrasInterface extends javax.swing.JFrame {
 
     private void psmaterialFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_psmaterialFocusLost
         // TODO add your handling code here:
-        if (!psmaterial.getText().equals("")){
+        if (!psmaterial.getText().equals("")) {
             jButton1.setEnabled(true);
             jButton2.setEnabled(true);
-        }else {
+        } else {
             jButton1.setEnabled(false);
             jButton2.setEnabled(false);
         }
@@ -603,6 +685,40 @@ public class ObrasInterface extends javax.swing.JFrame {
         daoesculturamaterial.calcultatotal(esculturamaterial);
         ds_estilo.setText(Integer.toString(esculturamaterial.getTotal()));
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jBtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtPesquisarActionPerformed
+        switch (jCbPesquisa.getSelectedIndex()) {
+            case 0:
+                daoobra.consultaGeral(obra);
+                preenchertable.PreencherJtableGenerico(jTbPesquisa2, new String[]{"CD_OBRA", "TP_OBRA", "TI_OBRA", "ANO_OBRA", "CD_AUTOR", "CD_SALAO", "CD_ANDAR"}, obra.getRetorno());
+                break;
+            case 1:
+                obra.setCd_obra(Integer.parseInt(jTfPesquisa.getText()));
+                daoobra.consultaCd(obra);
+                preenchertable.PreencherJtableGenerico(jTbPesquisa2, new String[]{"CD_OBRA", "TP_OBRA", "TI_OBRA", "ANO_OBRA", "CD_AUTOR", "CD_SALAO", "CD_ANDAR"}, obra.getRetorno());
+                break;
+            case 2:
+                obra.setTi_obra(jTfPesquisa.getText());
+                daoobra.consultaObra(obra);
+                preenchertable.PreencherJtableGenerico(jTbPesquisa2, new String[]{"CD_OBRA", "TP_OBRA", "TI_OBRA", "ANO_OBRA", "CD_AUTOR", "CD_SALAO", "CD_ANDAR"}, obra.getRetorno());
+                break;
+        }
+    }//GEN-LAST:event_jBtPesquisarActionPerformed
+
+    private void jTbPesquisa2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTbPesquisa2MouseClicked
+        if (evt.getClickCount() == 2) {
+            int linha = jTbPesquisa2.getSelectedRow();
+            String valor = (String) jTbPesquisa2.getValueAt(linha, 0);
+            obra.setCd_obra(Integer.parseInt(valor));
+            daoobra.retornardados(obra);
+            setcomp();
+
+        }
+    }//GEN-LAST:event_jTbPesquisa2MouseClicked
+
+    private void ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -644,6 +760,8 @@ public class ObrasInterface extends javax.swing.JFrame {
     public javax.swing.JButton Cancelar;
     public javax.swing.JButton Excluir;
     public javax.swing.JButton Gravar;
+    public javax.swing.JPanel JPConsulta;
+    public javax.swing.JPanel JPConsulta1;
     public javax.swing.JButton Novo;
     public javax.swing.JTextField ano_obra;
     public javax.swing.JComboBox cd_autor;
@@ -651,9 +769,13 @@ public class ObrasInterface extends javax.swing.JFrame {
     public javax.swing.JComboBox cd_salao;
     public javax.swing.JTextField codmaterial;
     public javax.swing.JTextField ds_estilo;
+    public javax.swing.JButton jBtPesquisar;
     public javax.swing.JButton jButton1;
     public javax.swing.JButton jButton2;
+    public javax.swing.JComboBox jCbPesquisa;
     public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel10;
+    public javax.swing.JLabel jLabel11;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
     public javax.swing.JLabel jLabel4;
@@ -670,9 +792,16 @@ public class ObrasInterface extends javax.swing.JFrame {
     public javax.swing.JPanel jPanelSala;
     public javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JScrollPane jScrollPane2;
+    public javax.swing.JScrollPane jScrollPane3;
+    public javax.swing.JScrollPane jScrollPane4;
+    public javax.swing.JScrollPane jScrollPane5;
     public javax.swing.JTabbedPane jTabbedPane1;
     public javax.swing.JTable jTable1;
     public javax.swing.JTable jTable2;
+    public javax.swing.JTable jTbPesquisa;
+    public javax.swing.JTable jTbPesquisa1;
+    public javax.swing.JTable jTbPesquisa2;
+    public javax.swing.JTextField jTfPesquisa;
     public javax.swing.JTextField psmaterial;
     public javax.swing.JTextField ti_obra;
     public javax.swing.JComboBox tp_obra;
@@ -704,6 +833,39 @@ public class ObrasInterface extends javax.swing.JFrame {
             obra.setCd_salao(Integer.parseInt(salao2[1].trim()));
             obra.setTi_obra(ti_obra.getText());
         }
+    }
+
+    public void setcomp() {
+        cd_obra.setText(Integer.toString(obra.getCd_obra()));
+        ti_obra.setText(obra.getTi_obra());
+        ano_obra.setText(Integer.toString(obra.getAno_obra()));
+        daoautor.consultaGeral(autor);
+        preenchecombo.PreencherComboBoxGenerico(cd_autor, "NM_AUTOR", "CD_AUTOR", autor.getRetorno());
+        daosalao.consultaGeral(salao);
+        preenchecombo.PreencherComboBoxGenerico(cd_salao, "CD_ANDAR", "CD_SALAO", salao.getRetorno());
+        String salaoandar = (obra.getCd_salao()) + "-" + obra.getCd_andar();
+        cd_salao.setSelectedItem(salaoandar);
+        tp_obra.setSelectedIndex(obra.getTp_obra());
+        ds_estilo.setEnabled(true);
+        if (obra.getTp_obra() == 1){
+          jLabel7.setText("Escolha o estilo da pintura");
+          pintura.setCd_obra(obra.getCd_obra());
+          pintura.setTp_obra(obra.getTp_obra());          
+          daoobra.consultaCodigo(pintura);
+          ds_estilo.setText(pintura.getDs_estilo());
+        }else if (obra.getTp_obra() == 2){
+         jLabel7.setText("Peso Total da Escultura");
+          escultura.setCd_obra(obra.getCd_obra());
+          escultura.setTp_obra(obra.getTp_obra());          
+          daoobra.consultaCodigo(escultura);
+          ds_estilo.setText(Integer.toString(escultura.getTt_peso()));
+          esculturamaterial.setCd_obra(obra.getCd_obra());
+          esculturamaterial.setTp_obra(obra.getTp_obra());
+          esculturamaterial.setTabela(jTable1);
+          daoesculturamaterial.consultaCodigo(esculturamaterial);
+          
+        }
+        
     }
 
 }

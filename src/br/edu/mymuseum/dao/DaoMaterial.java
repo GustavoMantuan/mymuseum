@@ -36,8 +36,8 @@ public class DaoMaterial {
    
 
     public void alterar(Material pessoa) {
-        conecta_oracle.atualizarSQL("UPDATE MATERIAL SET NM_MATERIAL = '" + pessoa.getNm_materia()
-                + ", QT_ESTOQUE = '" + pessoa.getQt_estoque()
+        conecta_oracle.atualizarSQL("UPDATE MATERIAL SET NM_MATERIA = '" + pessoa.getNm_materia()
+                + "', QT_ESTOQUE = " + pessoa.getQt_estoque()
                 + "  WHERE CD_MATERIAL = " + pessoa.getCd_material()
         );
     }
@@ -45,31 +45,30 @@ public class DaoMaterial {
     public void excluir(Material pessoa) {
         conecta_oracle.deleteSQL("DELETE FROM MATERIAL WHERE CD_MATERIAL = " + pessoa.getCd_material());
     }
-//    public void retornardados(Funcionario pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
-//        try {
-//            conecta_oracle.resultset.first();
-//            pessoa.setCd_pessoa(conecta_oracle.resultset.getInt("CD_PESSOA"));
-//            pessoa.setDs_pessoa(conecta_oracle.resultset.getString("DS_PESSOA"));
-//            pessoa.setIn_ativo(conecta_oracle.resultset.getString("IN_ATIVO"));
-//            pessoa.setDt_cadastro(conecta_oracle.resultset.getString("DT_CADASTRO"));
-//          
-//        } catch (Exception e) {
-//        }
-//    }
+    public void retornardados(Material material) {
+        conecta_oracle.executeSQL("SELECT * FROM MATERIAL WHERE CD_MATERIAL = " + material.getCd_material());
+        try {
+            conecta_oracle.resultset.first();
+            material.setCd_material(conecta_oracle.resultset.getInt("CD_MATERIAL"));
+            material.setNm_materia(conecta_oracle.resultset.getString("NM_MATERIA"));
+            material.setQt_estoque(conecta_oracle.resultset.getDouble("QT_ESTOQUE"));
+            
+        } catch (Exception e) {
+        }
+    }
 
-//    public void consultaGeral(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA");
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
+    public void consultaGeral(Material pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM MATERIAL");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
 //
     public void consultaCodigo(Material pessoa) {
         conecta_oracle.executeSQL("SELECT * FROM MATERIAL WHERE CD_MATERIAL = " + pessoa.getCd_material());
         pessoa.setRetorno(conecta_oracle.resultset);
     }
-//
-//    public void consultaPessoa(Pessoa pessoa) {
-//        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE DS_PESSOA LIKE '%" + pessoa.getDs_pessoa()+ "%'");
-//        pessoa.setRetorno(conecta_oracle.resultset);
-//    }
+
+    public void consultaMaterial(Material pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM MATERIAL WHERE NM_MATERIAL LIKE '%" + pessoa.getNm_materia()+ "%'");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
 }

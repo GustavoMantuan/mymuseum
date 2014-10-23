@@ -49,11 +49,8 @@ public class SalaoInterface extends javax.swing.JFrame {
         cd_andar = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         Novo = new javax.swing.JButton();
-        Alterar = new javax.swing.JButton();
         Gravar = new javax.swing.JButton();
-        Excluir = new javax.swing.JButton();
         Cancelar = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,21 +71,12 @@ public class SalaoInterface extends javax.swing.JFrame {
             }
         });
 
-        Alterar.setText("Alterar");
-        Alterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AlterarActionPerformed(evt);
-            }
-        });
-
         Gravar.setText("Gravar");
         Gravar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GravarActionPerformed(evt);
             }
         });
-
-        Excluir.setText("Excluir");
 
         Cancelar.setText("Cancelar");
         Cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -104,13 +92,9 @@ public class SalaoInterface extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Novo)
-                .addGap(18, 18, 18)
-                .addComponent(Alterar)
-                .addGap(18, 18, 18)
+                .addGap(101, 101, 101)
                 .addComponent(Gravar)
-                .addGap(18, 18, 18)
-                .addComponent(Excluir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(91, 91, 91)
                 .addComponent(Cancelar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -120,9 +104,7 @@ public class SalaoInterface extends javax.swing.JFrame {
                 .addContainerGap(30, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Novo)
-                    .addComponent(Alterar)
                     .addComponent(Gravar)
-                    .addComponent(Excluir)
                     .addComponent(Cancelar))
                 .addContainerGap())
         );
@@ -159,19 +141,6 @@ public class SalaoInterface extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Cadastro", jPanel1);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 164, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Consulta", jPanel2);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -199,12 +168,6 @@ public class SalaoInterface extends javax.swing.JFrame {
         cd_salao.setText(Integer.toString(sequencia));
         // TODO add your handling code here:
     }//GEN-LAST:event_NovoActionPerformed
-
-    private void AlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlterarActionPerformed
-        situacao = Rotinas.ALTERAR;
-        validabotoes.ValidaEstado(jPanel3, situacao);
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AlterarActionPerformed
 
     private void GravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GravarActionPerformed
         getcomp();
@@ -271,9 +234,7 @@ public class SalaoInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton Alterar;
     public javax.swing.JButton Cancelar;
-    public javax.swing.JButton Excluir;
     public javax.swing.JButton Gravar;
     public javax.swing.JButton Novo;
     public javax.swing.JTextField cd_andar;
@@ -281,7 +242,6 @@ public class SalaoInterface extends javax.swing.JFrame {
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel6;
     public javax.swing.JPanel jPanel1;
-    public javax.swing.JPanel jPanel2;
     public javax.swing.JPanel jPanel3;
     public javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
