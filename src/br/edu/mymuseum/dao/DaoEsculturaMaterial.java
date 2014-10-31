@@ -1,8 +1,11 @@
 package br.edu.mymuseum.dao;
 
 import br.edu.mymuseum.classe.EsculturaMaterial;
+import br.edu.mymuseum.classe.Material;
 
 import br.edu.mymuseum.conexao.ConexaoOracle;
+import br.edu.mymuseum.validacao.PreencherJtableGenerico;
+import br.edu.mymuseum.validacao.UltimaSequencia;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +19,11 @@ import javax.swing.table.DefaultTableModel;
 public class DaoEsculturaMaterial {
 
     ConexaoOracle conecta_oracle;
+    PreencherJtableGenerico pj = new PreencherJtableGenerico();
 
     public DaoEsculturaMaterial() {
         conecta_oracle = new ConexaoOracle();
+
     }
 
     public void incluiritens(EsculturaMaterial escultura) {
@@ -108,13 +113,15 @@ public class DaoEsculturaMaterial {
     }
 
     public void incluir(EsculturaMaterial escultura) {
-
+        UltimaSequencia ultima = new UltimaSequencia();
         try {
-            conecta_oracle.incluirSQL("INSERT INTO ESCULTURA_MATERIAIS (CD_MATERIAL,CD_OBRA,TP_OBRA,PS_MATERIAL) VALUES ("
+            int ult = ultima.ultimasequencia("ESCULTURA_MATERIAIS", "CD_ESMA");
+            conecta_oracle.incluirSQL("INSERT INTO ESCULTURA_MATERIAIS (CD_MATERIAL,CD_OBRA,TP_OBRA,PS_MATERIAL,CD_ESMA) VALUES ("
                     + escultura.getCd_material()
                     + ", " + escultura.getCd_obra()
                     + ", " + escultura.getTp_obra()
                     + ", " + escultura.getPs_material()
+                    + ", " + ult
                     + ")"
             );
         } catch (Exception e) {
@@ -122,18 +129,35 @@ public class DaoEsculturaMaterial {
     }
 
     public void consultaCodigo(EsculturaMaterial pessoa) {
-        conecta_oracle.executeSQL("SELECT * FROM ESCULTURA_MATERIAIS WHERE CD_OBRA = " + pessoa.getCd_obra() + "AND TP_OBRA = " + pessoa.getTp_obra());
+        conecta_oracle.executeSQL("SELECT * FROM ESCULTURA_MATERIAIS WHERE CD_OBRA = " + pessoa.getCd_obra() + " AND TP_OBRA = " + pessoa.getTp_obra());
         pessoa.setRetorno(conecta_oracle.resultset);
-        
-        while (pessoa.getRetorno() != null) {
-            try {
-                pessoa.getRetorno().next();
-                pessoa.setCd_material(pessoa.getRetorno().getInt("CD_MATERIAL"));
-                pessoa.setPs_material(pessoa.getRetorno().getInt("PS_MATERIAL"));
-                incluiritens(pessoa);
-            } catch (SQLException ex) {
-                Logger.getLogger(DaoObra.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        DefaultTableModel tabela = (DefaultTableModel) pessoa.getTabela().getModel();
+
+        Boolean sel = false;
+
+        try {
+            pessoa.getRetorno().first();
+
+            pessoa.setCd_material(pessoa.getRetorno().getInt("CD_MATERIAL"));
+            pessoa.setPs_material(pessoa.getRetorno().getInt("PS_MATERIAL"));
+            Material material = new Material();
+            DaoMaterial daomaterial = new DaoMaterial();
+            material.setCd_material(pessoa.getRetorno().getInt("CD_MATERIAL"));
+            daomaterial.consultaCodigo(material);
+            material.getRetorno().first();
+            pessoa.setDs_material(material.getRetorno().getString("NM_MATERIA"));
+
+//            while (pessoa.getRetorno().next()) {
+//                int len = 3;
+//                Object[] row = new Object[len];
+//                row[0] = tabela.setValueAt((false), totlinha, 0);
+//                TabelaItem.setValueAt(escultura.getCd_material(), totalinha, 1);
+//                TabelaItem.setValueAt(escultura.getDs_material(), totalinha, 2);
+//                TabelaItem.setValueAt(escultura.getPs_material(), totalinha, 3);
+//                tabela.addRow(row);
+//            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoEsculturaMaterial.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

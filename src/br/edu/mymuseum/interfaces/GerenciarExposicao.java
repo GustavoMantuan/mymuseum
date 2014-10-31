@@ -38,7 +38,6 @@ public class GerenciarExposicao extends javax.swing.JFrame {
     public GerenciarExposicao() {
         initComponents();
         daoautor.consultaGeral(autor);
-        preenchercombo.PreencherComboBoxGenerico(cd_autor, "NM_AUTOR", "CD_AUTOR", autor.getRetorno());
     }
 
     @SuppressWarnings("unchecked")
@@ -55,14 +54,12 @@ public class GerenciarExposicao extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         tp_obra = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        cd_autor = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTObras = new javax.swing.JTable();
         Alterar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPSalao.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações para filtro"));
 
@@ -94,10 +91,6 @@ public class GerenciarExposicao extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Autor");
-
-        cd_autor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos" }));
-
         javax.swing.GroupLayout jPSalaoLayout = new javax.swing.GroupLayout(jPSalao);
         jPSalao.setLayout(jPSalaoLayout);
         jPSalaoLayout.setHorizontalGroup(
@@ -114,15 +107,10 @@ public class GerenciarExposicao extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPSalaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tp_obra, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPSalaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPSalaoLayout.createSequentialGroup()
-                        .addComponent(cd_autor, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tp_obra, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         jPSalaoLayout.setVerticalGroup(
             jPSalaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,15 +119,13 @@ public class GerenciarExposicao extends javax.swing.JFrame {
                 .addGroup(jPSalaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPSalaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cd_salao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cd_andar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tp_obra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(cd_autor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -210,7 +196,7 @@ public class GerenciarExposicao extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JTBGerenciarObras, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(JTBGerenciarObras)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,36 +217,14 @@ public class GerenciarExposicao extends javax.swing.JFrame {
         } else if (tp_obra.getSelectedIndex() == 2) {
             tpobra = 2;
         }
-        if (cd_autor.getSelectedIndex() != 0) {
-            String[] a = cd_autor.getSelectedItem().toString().split("-");
-            int cd = Integer.parseInt(a[0].toString());
-            autor.setCd_autor(cd);
-            daoautor.consultaPessoa(autor);
-            try {
-                autor.getRetorno().first();
-                cdautor = autor.getRetorno().getInt("CD_AUTOR");
-            } catch (SQLException ex) {
-                Logger.getLogger(GerenciarExposicao.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if (tpobra != 0 & cdautor != 0) {
+       
+        if (tpobra != 0) {
             obra.setCd_andar(cdandar);
             obra.setCd_salao(cdsalao);
-            daoobra.consultaCodigoTpAtor(obra);
+            obra.setTp_obra(tpobra);
+            daoobra.consultaTpObra(obra);
             preencherjtable.PreencherJtableGenerico(jTObras, new String[]{"cd_obra", "tp_obra", "ano_obra", "ti_obra", "cd_salao", "cd_andar", "cd_autor"}, obra.getRetorno());
-        } else if (tpobra == 0 & cdautor != 0) {
-            obra.setCd_autor(cdautor);
-            daoobra.consultaCodigoAtor(obra);
-            obra.setCd_andar(cdandar);
-            obra.setCd_salao(cdsalao);
-            preencherjtable.PreencherJtableGenerico(jTObras, new String[]{"cd_obra", "tp_obra", "ano_obra", "ti_obra", "cd_salao", "cd_andar", "cd_autor"}, obra.getRetorno());
-        } else if (tpobra != 0 & cdautor == 0) {
-            obra.setTp_obra(cdautor);
-            daoobra.consultaCodigoAtor(obra);
-            obra.setCd_andar(cdandar);
-            obra.setCd_salao(cdsalao);
-            preencherjtable.PreencherJtableGenerico(jTObras, new String[]{"cd_obra", "tp_obra", "ano_obra", "ti_obra", "cd_salao", "cd_andar", "cd_autor"}, obra.getRetorno());
-        }else {
+        } else if (tpobra ==0){
             daoobra.consultaCodigo(obra);
             obra.setCd_andar(cdandar);
             obra.setCd_salao(cdsalao);
@@ -316,49 +280,47 @@ public class GerenciarExposicao extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GerenciarExposicao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GerenciarExposicao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GerenciarExposicao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GerenciarExposicao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GerenciarExposicao().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(GerenciarExposicao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(GerenciarExposicao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(GerenciarExposicao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(GerenciarExposicao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new GerenciarExposicao().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Alterar;
     private javax.swing.JTabbedPane JTBGerenciarObras;
     private javax.swing.JTextField cd_andar;
-    private javax.swing.JComboBox cd_autor;
     private javax.swing.JTextField cd_salao;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPGerenciarObras;
     private javax.swing.JPanel jPSalao;
     private javax.swing.JPanel jPanel1;

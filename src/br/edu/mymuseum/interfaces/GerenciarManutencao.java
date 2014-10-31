@@ -44,7 +44,7 @@ public class GerenciarManutencao extends javax.swing.JFrame {
     
     public GerenciarManutencao() {
         initComponents();
-        daoobra.consultaGeral(obra);
+        daoobra.consultaEscultura(obra);
         preenchercombo.PreencherComboBoxGenerico(cd_obra, "TI_OBRA", "CD_OBRA", obra.getRetorno());
         daofuncionario.consultaReparador(restaurador);
         preenchercombo.PreencherComboBoxGenerico(cd_funcionario, "NM_FUNCIONARIO", "CD_FUNCIONARIO", restaurador.getRetorno());
@@ -86,7 +86,7 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Escolha o Reparador e a Obra"));
 
@@ -431,6 +431,7 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         getcomp();
         daomanutencao.incluir(manutencaoobra);
         manutencaomaterial.setTabela(jTable2);
+        manutencaomaterial.setDt_inicio(dt_inicio.getText());
         daomanutencaomaterial.grava_itens(manutencaomaterial);
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -448,42 +449,43 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         // TODO add your handling code here:
         LimparCampos limpar = new LimparCampos();
         limpar.LimparCampos(jPanel1);
+        cd_funcionario.setEnabled(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GerenciarManutencao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GerenciarManutencao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GerenciarManutencao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GerenciarManutencao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GerenciarManutencao().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(GerenciarManutencao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(GerenciarManutencao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(GerenciarManutencao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(GerenciarManutencao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new GerenciarManutencao().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox cd_funcionario;
@@ -525,6 +527,7 @@ public class GerenciarManutencao extends javax.swing.JFrame {
             daoobra.consultaCd(obra);
             int tp_obra = 0;
             try {
+                obra.getRetorno().first();
                 tp_obra = obra.getRetorno().getInt("TP_OBRA");
             } catch (SQLException ex) {
                 Logger.getLogger(GerenciarManutencao.class.getName()).log(Level.SEVERE, null, ex);

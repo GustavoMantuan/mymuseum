@@ -142,7 +142,7 @@ public class DaoObra {
     }
 
     public void consultaCodigo(Pintura pessoa) {
-        conecta_oracle.executeSQL("SELECT * FROM PINTURA WHERE CD_OBRA = " + pessoa.getCd_obra() + "AND TP_OBRA = "+pessoa.getTp_obra());
+        conecta_oracle.executeSQL("SELECT * FROM PINTURA WHERE CD_OBRA = " + pessoa.getCd_obra() + "AND TP_OBRA = " + pessoa.getTp_obra());
         pessoa.setRetorno(conecta_oracle.resultset);
         try {
             pessoa.getRetorno().first();
@@ -150,10 +150,11 @@ public class DaoObra {
         } catch (SQLException ex) {
             Logger.getLogger(DaoObra.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
+
     public void consultaCodigo(Escultura pessoa) {
-        conecta_oracle.executeSQL("SELECT * FROM ESCULTURA WHERE CD_OBRA = " + pessoa.getCd_obra() + "AND TP_OBRA = "+pessoa.getTp_obra());
+        conecta_oracle.executeSQL("SELECT * FROM ESCULTURA WHERE CD_OBRA = " + pessoa.getCd_obra() + "AND TP_OBRA = " + pessoa.getTp_obra());
         pessoa.setRetorno(conecta_oracle.resultset);
         try {
             pessoa.getRetorno().first();
@@ -161,7 +162,7 @@ public class DaoObra {
         } catch (SQLException ex) {
             Logger.getLogger(DaoObra.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     public void consultaCodigoTpAtor(Obra pessoa) {
@@ -181,6 +182,11 @@ public class DaoObra {
 
     public void consultaGeral(Obra pessoa) {
         conecta_oracle.executeSQL("SELECT * FROM OBRAS");
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
+
+    public void consultaEscultura(Obra pessoa) {
+        conecta_oracle.executeSQL("SELECT * FROM OBRAS WHERE TP_OBRA = 2");
         pessoa.setRetorno(conecta_oracle.resultset);
     }
 

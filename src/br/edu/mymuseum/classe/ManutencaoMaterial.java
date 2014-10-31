@@ -16,7 +16,9 @@ public class ManutencaoMaterial {
     private int tp_obra;
     private int cd_material;
     private int qt_material; 
+    private String dt_inicio;
     private String ds_material;
+    private String dt_final;
     private JTable tabela;
 
     public int getCd_obra() {
@@ -65,5 +67,21 @@ public class ManutencaoMaterial {
 
     public void setTabela(JTable tabela) {
         this.tabela = tabela;
+    }
+
+    public String getDt_inicio() {
+        return dt_inicio;
+    }
+
+    public void setDt_inicio(String dt_inicio) {
+        this.dt_inicio = dt_inicio;
+    }
+
+    public String getDt_final() {
+        return dt_final;
+    }
+
+    public void setDt_final(String dt_final) {
+        this.dt_final = dt_final;
     }
 }

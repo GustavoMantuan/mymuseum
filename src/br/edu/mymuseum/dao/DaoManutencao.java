@@ -26,7 +26,7 @@ public class DaoManutencao {
         try {
             conecta_oracle.incluirSQL("INSERT INTO MANUTENCAO (CD_OBRA,TP_OBRA,CD_FUNCIONARIO,DT_INICIO,DT_FINAL,DS_SERVICO,CUSTO) VALUES ("
                     + pessoa.getCd_obra()
-                    + ", " + pessoa.getTp_obra()
+                    + ", " + 2
                     + ", " + pessoa.getCd_funcionario()
                     + ", '" + pessoa.getDt_inicio()
                     + "', '" + pessoa.getDt_final()

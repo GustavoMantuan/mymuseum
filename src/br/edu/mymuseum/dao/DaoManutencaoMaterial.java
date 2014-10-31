@@ -5,6 +5,11 @@ import br.edu.mymuseum.classe.ManutencaoMaterial;
 import br.edu.mymuseum.classe.Obra;
 
 import br.edu.mymuseum.conexao.ConexaoOracle;
+import br.edu.mymuseum.validacao.UltimaSequencia;
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -91,44 +96,55 @@ public class DaoManutencaoMaterial {
         System.out.println(total);
     }
 
-    
-public void grava_itens(ManutencaoMaterial obra) {
+    public void grava_itens(ManutencaoMaterial obra) {
         DefaultTableModel TabelaItem = (DefaultTableModel) obra.getTabela().getModel();
         int totalinha = obra.getTabela().getRowCount();
         for (int i = 0; i < totalinha; i++) {
             obra.setCd_material(Integer.parseInt(TabelaItem.getValueAt(i, 1).toString()));
             obra.setQt_material(Integer.parseInt(TabelaItem.getValueAt(i, 3).toString()));
             obra.setCd_obra(Integer.parseInt(TabelaItem.getValueAt(i, 4).toString()));
-            obra.setTp_obra(Integer.parseInt(TabelaItem.getValueAt(i, 5).toString()));            
+            obra.setTp_obra(Integer.parseInt(TabelaItem.getValueAt(i, 5).toString()));
             incluir(obra);
+            CallableStatement cs;
+            try {
+                cs = ConexaoOracle.conecta().prepareCall("{call ATUALIZA_ESTOQUE_MATERIAL (?, ?)}");
+                cs.setInt(1, obra.getCd_material());
+                cs.setInt(2, obra.getQt_material());
+                cs.execute();
+            } catch (SQLException ex) {
+                Logger.getLogger(DaoManutencaoMaterial.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
     }
-    
-    public void incluir(ManutencaoMaterial pessoa) {
+
+    public void incluir(ManutencaoMaterial escultura) {
 
         try {
-            conecta_oracle.incluirSQL("INSERT INTO ESCULTURA_MATERIAIS (CD_MATERIAL,CD_OBRA,TP_OBRA,QT_MATERIAL) VALUES ("
-                    + pessoa.getCd_material()
-                    + ", " + pessoa.getCd_obra()
-                    + ", " + pessoa.getTp_obra()
-                    + ", " + pessoa.getQt_material()
+
+            conecta_oracle.incluirSQL("INSERT INTO MANUTENCAO_MATERIAL (CD_MATERIAL,CD_OBRA,TP_OBRA,DT_INICIO,QT_MATERIAL) VALUES ("
+                    + escultura.getCd_material()
+                    + ", " + escultura.getCd_obra()
+                    + ", " + escultura.getTp_obra()
+                    + ", '" + escultura.getDt_inicio()
+                    + "', " + escultura.getQt_material()
                     + ")"
             );
         } catch (Exception e) {
         }
     }
 
-    public void alterar(EsculturaMaterial pessoa) {
-        conecta_oracle.atualizarSQL("UPDATE ESCULTURA_MATERIAIS SET cd_material = " + pessoa.getCd_material()
-                + ", PS_MATERIAL = '" + pessoa.getPs_material()
+    public void alterar(ManutencaoMaterial pessoa) {
+        conecta_oracle.atualizarSQL("UPDATE MANUTENCAO_MATERIAL SET cd_material = " + pessoa.getCd_material()
+                + ", PS_MATERIAL = '" + pessoa.getQt_material()
                 + "  WHERE CD_OBRA = " + pessoa.getCd_obra()
                 + " AND TP_OBRA = " + pessoa.getTp_obra()
+                + " AND DT_INICIO = " + pessoa.getDt_inicio()
         );
     }
 
-    public void excluir(EsculturaMaterial pessoa) {
-        conecta_oracle.deleteSQL("DELETE FROM ESCULTURA_MATERIAIS WHERE CD_OBRA = " + pessoa.getCd_obra() + "AND TP_OBRA = " + pessoa.getTp_obra());
+    public void excluir(ManutencaoMaterial pessoa) {
+        conecta_oracle.deleteSQL("DELETE FROM MANUTENCAO_MATERIAL WHERE CD_OBRA = " + pessoa.getCd_obra() + "AND TP_OBRA = " + pessoa.getTp_obra());
     }
 //    public void retornardados(Funcionario pessoa) {
 //        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
