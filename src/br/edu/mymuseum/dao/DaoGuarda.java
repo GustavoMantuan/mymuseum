@@ -1,6 +1,5 @@
 package br.edu.mymuseum.dao;
 
-
 import br.edu.mymuseum.classe.Guarda;
 
 import br.edu.mymuseum.conexao.ConexaoOracle;
@@ -34,12 +33,13 @@ public class DaoGuarda {
         }
     }
 
-   
-
-  
+    public void pega_horario(Guarda pessoa) {
+        conecta_oracle.executeSQL("SELECT (HR_SAIDA) - (HR_ENTRADA) AS HORARIO, SUBSTR(HORARIO,10,17) FROM GUARDA WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario() + " AND CD_ANDAR = " + pessoa.getCd_andar() + " AND CD_SALAO = " + pessoa.getCd_salao());
+        pessoa.setRetorno(conecta_oracle.resultset);
+    }
 
     public void excluir(Guarda pessoa) {
-        conecta_oracle.deleteSQL("DELETE FROM SALAO WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario() + "AND CD_SALAO = "+ pessoa.getCd_salao() + "AND CD_ANDAR = " + pessoa.getCd_andar());
+        conecta_oracle.deleteSQL("DELETE FROM SALAO WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario() + "AND CD_SALAO = " + pessoa.getCd_salao() + "AND CD_ANDAR = " + pessoa.getCd_andar());
     }
 //    public void retornardados(Funcionario pessoa) {
 //        conecta_oracle.executeSQL("SELECT * FROM CAD_PESSOA WHERE CD_PESSOA = " + pessoa.getCd_pessoa());
@@ -54,12 +54,12 @@ public class DaoGuarda {
 //        }
 //    }
 
-    
     public void consultaGeral(Guarda pessoa) {
         conecta_oracle.executeSQL("SELECT * FROM SALAO");
         pessoa.setRetorno(conecta_oracle.resultset);
     }
 //
+
     public void consultaCodigo(Guarda pessoa) {
         conecta_oracle.executeSQL("SELECT * FROM SALAO WHERE CD_SALAO = " + pessoa.getCd_salao());
         pessoa.setRetorno(conecta_oracle.resultset);

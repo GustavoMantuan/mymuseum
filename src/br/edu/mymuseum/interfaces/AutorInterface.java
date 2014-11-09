@@ -302,6 +302,7 @@ public class AutorInterface extends javax.swing.JFrame {
             daoautor.alterar(autor);
         }
         validabotoes.ValidaEstado(jPanel3, Rotinas.PADRÃO);
+        limparcampos.LimparCampos(jPanel1);
         situacao = Rotinas.PADRÃO;
 
         // TODO add your handling code here:

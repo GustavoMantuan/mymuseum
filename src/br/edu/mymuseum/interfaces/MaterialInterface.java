@@ -294,7 +294,7 @@ public class MaterialInterface extends javax.swing.JFrame {
         } else if (situacao == Rotinas.ALTERAR) {
             daomaterial.alterar(material);
         }
-
+        limparcampos.LimparCampos(jPanel1);
         // TODO add your handling code here:
     }//GEN-LAST:event_GravarActionPerformed
 

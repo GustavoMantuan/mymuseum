@@ -10,13 +10,13 @@ package br.edu.mymuseum.classe;
  * @author Dorga
  */
 public class Guardinha extends Funcionario {
-    private Double tt_guardas;
+    private String tt_guardas;
 
-    public Double getTt_guardas() {
+    public String getTt_guardas() {
         return tt_guardas;
     }
 
-    public void setTt_guardas(Double tt_guardas) {
+    public void setTt_guardas(String tt_guardas) {
         this.tt_guardas = tt_guardas;
     }
 }

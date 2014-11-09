@@ -11,10 +11,18 @@ import br.edu.mymuseum.classe.Salao;
 import br.edu.mymuseum.dao.DaoFuncionario;
 import br.edu.mymuseum.dao.DaoGuarda;
 import br.edu.mymuseum.dao.DaoSalao;
+import br.edu.mymuseum.validacao.FormatarCampo;
 import br.edu.mymuseum.validacao.LimparCampos;
 import br.edu.mymuseum.validacao.PreencherComboBoxGenerico;
 import br.edu.mymuseum.validacao.Rotinas;
 import br.edu.mymuseum.validacao.ValidaBotoes;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFormattedTextField;
 
 /**
  *
@@ -32,10 +40,11 @@ public class GerenciarGuardas extends javax.swing.JFrame {
     Salao salao = new Salao();
     DaoSalao daosalao = new DaoSalao();
     PreencherComboBoxGenerico preenchercombo = new PreencherComboBoxGenerico();
+    FormatarCampo formatarcampo = new FormatarCampo();
+
     public GerenciarGuardas() {
         initComponents();
         valida.ValidaEstado(jPanel3, situacao);
-        
 
     }
 
@@ -56,12 +65,12 @@ public class GerenciarGuardas extends javax.swing.JFrame {
         cd_salaoecd_andar = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        hr_entrada = new javax.swing.JTextField();
-        hr_saida = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         Novo = new javax.swing.JButton();
         Gravar = new javax.swing.JButton();
         Cancelar = new javax.swing.JButton();
+        hr_entrada = new javax.swing.JFormattedTextField();
+        hr_saida = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -151,25 +160,31 @@ public class GerenciarGuardas extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        hr_entrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hr_entradaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(hr_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(hr_saida, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(hr_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(hr_saida, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,11 +194,11 @@ public class GerenciarGuardas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hr_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hr_saida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(31, 31, 31)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 11, Short.MAX_VALUE))
         );
@@ -208,13 +223,25 @@ public class GerenciarGuardas extends javax.swing.JFrame {
         daofuncionario.consultaGuardinha(guardinha);
         preenchercombo.PreencherComboBoxGenerico(cd_guarda, "NM_FUNCIONARIO", "CD_FUNCIONARIO", guardinha.getRetorno());
         daosalao.consultaGeral(salao);
-        preenchercombo.PreencherComboBoxGenerico(cd_salaoecd_andar,"CD_ANDAR", "CD_SALAO", salao.getRetorno());
+        preenchercombo.PreencherComboBoxGenerico(cd_salaoecd_andar, "CD_ANDAR", "CD_SALAO", salao.getRetorno());
         // TODO add your handling code here:
+        formatarcampo.FormatarCampo("##/##/## ##:##:##", hr_entrada, "numeros");
+        formatarcampo.FormatarCampo("##/##/## ##:##:##", hr_saida, "numeros");
     }//GEN-LAST:event_NovoActionPerformed
 
     private void GravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GravarActionPerformed
         getcomp();
         daoguarda.incluir(guarda);
+        guardinha.setCd_funcionario(guarda.getCd_funcionario());
+        //daoguarda.pega_horario(guarda);
+//        try {
+//          //  guarda.getRetorno().first();
+//          //  guardinha.setTt_guardas(guarda.getRetorno().getString("HORARIO"));
+//          //  System.out.println(guardinha.getTt_guardas());
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(GerenciarGuardas.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         // TODO add your handling code here:
     }//GEN-LAST:event_GravarActionPerformed
@@ -225,6 +252,10 @@ public class GerenciarGuardas extends javax.swing.JFrame {
         limparcampos.LimparCampos(jPanel1);
         // TODO add your handling code here:
     }//GEN-LAST:event_CancelarActionPerformed
+
+    private void hr_entradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hr_entradaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hr_entradaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,8 +298,8 @@ public class GerenciarGuardas extends javax.swing.JFrame {
     public javax.swing.JButton Novo;
     public javax.swing.JComboBox cd_guarda;
     public javax.swing.JComboBox cd_salaoecd_andar;
-    public javax.swing.JTextField hr_entrada;
-    public javax.swing.JTextField hr_saida;
+    public javax.swing.JFormattedTextField hr_entrada;
+    public javax.swing.JFormattedTextField hr_saida;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;

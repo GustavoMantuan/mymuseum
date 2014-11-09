@@ -80,6 +80,8 @@ public class DaoObra {
     }
 
     public void alterar(Pintura pintura) {
+        
+        
         conecta_oracle.atualizarSQL("UPDATE PINTURA SET "
                 + "DS_ESTILO = '" + pintura.getDs_estilo()
                 + "' WHERE CD_OBRA = " + pintura.getCd_obra()

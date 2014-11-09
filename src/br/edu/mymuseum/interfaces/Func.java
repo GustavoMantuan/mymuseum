@@ -346,7 +346,7 @@ public class Func extends javax.swing.JFrame {
                 daofuncionario.incluir(restaurador);
             } else if (funcionario.getTp_funcinario() == 2) {
                 guarda.setCd_funcionario(sequencia);
-                guarda.setTt_guardas(Double.parseDouble(especialidade.getText()));
+                guarda.setTt_guardas(especialidade.getText());
                 daofuncionario.incluir(guarda);
             }
         }else if (situacao == Rotinas.ALTERAR){
@@ -357,7 +357,7 @@ public class Func extends javax.swing.JFrame {
                 daofuncionario.alterar(restaurador);
             } else if (funcionario.getTp_funcinario() == 2) {
                 guarda.setCd_funcionario(Integer.parseInt(cd_funcionario.getText()));
-                guarda.setTt_guardas(Double.parseDouble(especialidade.getText()));
+                guarda.setTt_guardas(especialidade.getText());
                 daofuncionario.alterar(guarda);
             }
         }
@@ -532,7 +532,7 @@ public class Func extends javax.swing.JFrame {
             tp_funcionario.setSelectedIndex(2);
             guarda.setCd_funcionario(funcionario.getCd_funcionario());
             daofuncionario.retornardados(guarda);
-            especialidade.setText(Double.toString(guarda.getTt_guardas()));
+            especialidade.setText((guarda.getTt_guardas()));
         }
     }
 }

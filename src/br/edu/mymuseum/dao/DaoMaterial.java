@@ -41,6 +41,9 @@ public class DaoMaterial {
                 + "  WHERE CD_MATERIAL = " + pessoa.getCd_material()
         );
     }
+    public void altera_estoque(Material mt){
+        conecta_oracle.atualizarSQL("UPGRADE MATERIAL SET QT_ESTOQUE = "+mt.getQt_estoque() + "WHERE CD_MATERIAL = "+mt.getCd_material());
+    }
 
     public void excluir(Material pessoa) {
         conecta_oracle.deleteSQL("DELETE FROM MATERIAL WHERE CD_MATERIAL = " + pessoa.getCd_material());

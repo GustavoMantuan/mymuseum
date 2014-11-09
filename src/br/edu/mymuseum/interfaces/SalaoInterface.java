@@ -172,7 +172,7 @@ public class SalaoInterface extends javax.swing.JFrame {
     private void GravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GravarActionPerformed
         getcomp();
         daosalao.incluir(salao);
-
+        limparcampos.LimparCampos(jPanel1);
         // TODO add your handling code here:
     }//GEN-LAST:event_GravarActionPerformed
 

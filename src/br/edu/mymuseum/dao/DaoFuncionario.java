@@ -65,6 +65,11 @@ public class DaoFuncionario {
                 + " WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario()
         );
     }
+    public void horas_de_guarda(Guardinha pessoa) {
+        conecta_oracle.atualizarSQL("UPDATE GUARDINHA SET TT_GUARDAS = " + pessoa.getTt_guardas()
+                + " WHERE CD_FUNCIONARIO = " + pessoa.getCd_funcionario()
+        );
+    }
 
     public void alterar(Restaurador pessoa) {
         conecta_oracle.atualizarSQL("UPDATE RESTAURADOR SET ESPECIALIDADE = '" + pessoa.getEspecialidade() + "' WHERE CD_FUNCIONARIO = "
@@ -72,7 +77,7 @@ public class DaoFuncionario {
     }
     
      public void alterar(Guardinha pessoa) {
-        conecta_oracle.atualizarSQL("UPDATE GUARDINHA SET TT_GUARDAS = '" + pessoa.getTt_guardas()+ "' WHERE CD_FUNCIONARIO = "
+        conecta_oracle.atualizarSQL("UPDATE GUARDINHA SET TT_GUARDAS = " + pessoa.getTt_guardas()+ " WHERE CD_FUNCIONARIO = "
                 +pessoa.getCd_funcionario());
     }
 
@@ -115,7 +120,7 @@ public class DaoFuncionario {
         try {
             conecta_oracle.resultset.first();
             pessoa.setCd_funcionario(conecta_oracle.resultset.getInt("CD_FUNCIONARIO"));
-            pessoa.setTt_guardas(conecta_oracle.resultset.getDouble("TT_GUARDAS"));
+            pessoa.setTt_guardas(conecta_oracle.resultset.getString("TT_GUARDAS"));
 
         } catch (Exception e) {
         }

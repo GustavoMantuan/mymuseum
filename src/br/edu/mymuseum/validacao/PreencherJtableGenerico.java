@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -53,4 +54,24 @@ public class PreencherJtableGenerico {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setNumRows(0);
     }
+     public void PreencherJtableGenericoSel(JTable tabela, String campos[], ResultSet resultSet) {
+        DefaultTableModel modelo = (DefaultTableModel) tabela.getModel();
+        modelo.setNumRows(0);
+        try {
+            while (resultSet.next()) {
+                int len = campos.length;
+                Object[] row = new Object[len+1];
+                for (int i = 0; i < len; i++) {
+                    if (i == 0) {
+                       row[i] = false; 
+                    } else {
+                    row[i] = resultSet.getString(campos[i]);
+                }
+                }
+                modelo.addRow(row);
+            }
+                } catch (SQLException erro) {
+                    JOptionPane.showMessageDialog(null, "Erro ao listar no JTable " + erro);
+            }
+        }
 }

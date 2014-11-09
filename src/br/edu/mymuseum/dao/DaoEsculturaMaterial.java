@@ -34,7 +34,7 @@ public class DaoEsculturaMaterial {
         int conta = 0;
         int linha = 0;
         for (int i = 1; i <= totalinha; i++) {
-            Integer cd_item = (Integer) escultura.getTabela().getValueAt(conta, 1);
+            int cd_item = Integer.parseInt(escultura.getTabela().getValueAt(conta, 1).toString());
             if (escultura.getCd_material() == cd_item) {
                 int opcao = JOptionPane.showConfirmDialog(null, "Material já cadastrado, deseja alterar?", "Alteração", JOptionPane.YES_NO_OPTION);
                 if (opcao == JOptionPane.YES_OPTION) {
@@ -89,7 +89,7 @@ public class DaoEsculturaMaterial {
 
         int total = 0;
         for (int i = 0; i < totlinha; i++) {
-            int valor = (Integer) classe.getTabela().getValueAt(i, 3);
+            int valor = Integer.parseInt(classe.getTabela().getValueAt(i, 3).toString());
             total += valor;
         }
         classe.setTotal(total);
@@ -111,6 +111,7 @@ public class DaoEsculturaMaterial {
         }
 
     }
+    
 
     public void incluir(EsculturaMaterial escultura) {
         UltimaSequencia ultima = new UltimaSequencia();
@@ -128,38 +129,9 @@ public class DaoEsculturaMaterial {
         }
     }
 
-    public void consultaCodigo(EsculturaMaterial pessoa) {
-        conecta_oracle.executeSQL("SELECT * FROM ESCULTURA_MATERIAIS WHERE CD_OBRA = " + pessoa.getCd_obra() + " AND TP_OBRA = " + pessoa.getTp_obra());
-        pessoa.setRetorno(conecta_oracle.resultset);
-        DefaultTableModel tabela = (DefaultTableModel) pessoa.getTabela().getModel();
-
-        Boolean sel = false;
-
-        try {
-            pessoa.getRetorno().first();
-
-            pessoa.setCd_material(pessoa.getRetorno().getInt("CD_MATERIAL"));
-            pessoa.setPs_material(pessoa.getRetorno().getInt("PS_MATERIAL"));
-            Material material = new Material();
-            DaoMaterial daomaterial = new DaoMaterial();
-            material.setCd_material(pessoa.getRetorno().getInt("CD_MATERIAL"));
-            daomaterial.consultaCodigo(material);
-            material.getRetorno().first();
-            pessoa.setDs_material(material.getRetorno().getString("NM_MATERIA"));
-
-//            while (pessoa.getRetorno().next()) {
-//                int len = 3;
-//                Object[] row = new Object[len];
-//                row[0] = tabela.setValueAt((false), totlinha, 0);
-//                TabelaItem.setValueAt(escultura.getCd_material(), totalinha, 1);
-//                TabelaItem.setValueAt(escultura.getDs_material(), totalinha, 2);
-//                TabelaItem.setValueAt(escultura.getPs_material(), totalinha, 3);
-//                tabela.addRow(row);
-//            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DaoEsculturaMaterial.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+    public void consultaCodigo(EsculturaMaterial escultura_material) {
+        conecta_oracle.executeSQL("SELECT em.CD_MATERIAL as CD,em.PS_MATERIAL as PESO, m.NM_MATERIA AS MATERIAL FROM ESCULTURA_MATERIAIS em INNER JOIN MATERIAL m on (m.CD_MATERIAL = em.CD_MATERIAL) WHERE CD_OBRA = " + escultura_material.getCd_obra() + " AND TP_OBRA = " + escultura_material.getTp_obra());
+        escultura_material.setRetorno(conecta_oracle.resultset);
     }
 
     public void alterar(EsculturaMaterial pessoa) {

@@ -15,6 +15,7 @@ import br.edu.mymuseum.dao.DaoManutencao;
 import br.edu.mymuseum.dao.DaoManutencaoMaterial;
 import br.edu.mymuseum.dao.DaoMaterial;
 import br.edu.mymuseum.dao.DaoObra;
+import br.edu.mymuseum.validacao.FormatarCampo;
 import br.edu.mymuseum.validacao.LimparCampos;
 import br.edu.mymuseum.validacao.PreencherComboBoxGenerico;
 import br.edu.mymuseum.validacao.Rotinas;
@@ -28,7 +29,7 @@ import javax.swing.JOptionPane;
  * @author Dorga
  */
 public class GerenciarManutencao extends javax.swing.JFrame {
-    
+
     Material material = new Material();
     DaoMaterial daomaterial = new DaoMaterial();
     Obra obra = new Obra();
@@ -41,14 +42,15 @@ public class GerenciarManutencao extends javax.swing.JFrame {
     DaoFuncionario daofuncionario = new DaoFuncionario();
     Restaurador restaurador = new Restaurador();
     int situacao = Rotinas.PADRÃO;
-    
+    FormatarCampo formatarcampo = new FormatarCampo();
+
     public GerenciarManutencao() {
         initComponents();
         daoobra.consultaEscultura(obra);
         preenchercombo.PreencherComboBoxGenerico(cd_obra, "TI_OBRA", "CD_OBRA", obra.getRetorno());
         daofuncionario.consultaReparador(restaurador);
         preenchercombo.PreencherComboBoxGenerico(cd_funcionario, "NM_FUNCIONARIO", "CD_FUNCIONARIO", restaurador.getRetorno());
-        
+
     }
 
     /**
@@ -68,8 +70,6 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         cd_obra = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        dt_inicio = new javax.swing.JTextField();
-        dt_fincal = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         ds_servico = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -85,8 +85,16 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         psmaterial = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        dt_inicio = new javax.swing.JFormattedTextField();
+        dt_final = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jPanel1FocusGained(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Escolha o Reparador e a Obra"));
 
@@ -141,12 +149,6 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         jLabel3.setText("Data Ínicio");
 
         jLabel4.setText("Data Final");
-
-        dt_fincal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dt_fincalActionPerformed(evt);
-            }
-        });
 
         jLabel5.setText("Descrição");
 
@@ -240,22 +242,20 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(dt_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(dt_fincal, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(95, 95, 95)
-                                .addComponent(jLabel4)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4)
+                                .addGap(114, 114, 114))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(dt_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(dt_final, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ds_servico, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
@@ -265,33 +265,30 @@ public class GerenciarManutencao extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(23, 23, 23))
+                            .addComponent(jLabel11))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(psmaterial)
+                            .addComponent(codmaterial)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel12)
-                                        .addGap(23, 23, 23))
-                                    .addComponent(jLabel11))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(psmaterial)
-                                    .addComponent(codmaterial)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2)))))
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 27, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,10 +302,10 @@ public class GerenciarManutencao extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dt_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dt_fincal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ds_servico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(custo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(custo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dt_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dt_final, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -347,10 +344,6 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void dt_fincalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dt_fincalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dt_fincalActionPerformed
-
     private void jTable2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable2FocusLost
 
         // TODO add your handling code here:
@@ -374,7 +367,7 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         }
         manutencaomaterial.setTabela(jTable2);
         daomanutencaomaterial.incluiritens(manutencaomaterial);
-        
+
         codmaterial.setText("");
         psmaterial.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -382,7 +375,7 @@ public class GerenciarManutencao extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         daomanutencaomaterial.excluiitens(manutencaomaterial);
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void codmaterialFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codmaterialFocusLost
@@ -415,7 +408,7 @@ public class GerenciarManutencao extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(GerenciarManutencao.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         } else {
             jButton1.setEnabled(false);
             jButton2.setEnabled(false);
@@ -432,7 +425,9 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         daomanutencao.incluir(manutencaoobra);
         manutencaomaterial.setTabela(jTable2);
         manutencaomaterial.setDt_inicio(dt_inicio.getText());
+        manutencaomaterial.setDt_final(dt_final.getText());
         daomanutencaomaterial.grava_itens(manutencaomaterial);
+       
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void cd_funcionarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cd_funcionarioFocusLost
@@ -443,6 +438,8 @@ public class GerenciarManutencao extends javax.swing.JFrame {
     private void cd_obraFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cd_obraFocusLost
         cd_obra.setEnabled(false);
         // TODO add your handling code here:
+        formatarcampo.FormatarCampo("##/##/## ##:##:##", dt_inicio, "numeros");
+        formatarcampo.FormatarCampo("##/##/## ##:##:##", dt_final, "numeros");
     }//GEN-LAST:event_cd_obraFocusLost
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -451,6 +448,11 @@ public class GerenciarManutencao extends javax.swing.JFrame {
         limpar.LimparCampos(jPanel1);
         cd_funcionario.setEnabled(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jPanel1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPanel1FocusGained
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jPanel1FocusGained
 
     /**
      * @param args the command line arguments
@@ -493,8 +495,8 @@ public class GerenciarManutencao extends javax.swing.JFrame {
     public javax.swing.JTextField codmaterial;
     public javax.swing.JTextField custo;
     public javax.swing.JTextField ds_servico;
-    public javax.swing.JTextField dt_fincal;
-    public javax.swing.JTextField dt_inicio;
+    public javax.swing.JFormattedTextField dt_final;
+    public javax.swing.JFormattedTextField dt_inicio;
     public javax.swing.JButton jButton1;
     public javax.swing.JButton jButton2;
     public javax.swing.JButton jButton3;
@@ -524,19 +526,12 @@ public class GerenciarManutencao extends javax.swing.JFrame {
             String[] obras = cd_obra.getSelectedItem().toString().split("-");
             int cd_obra = Integer.parseInt(obras[0].toString());
             manutencaoobra.setCd_obra(cd_obra);
-            daoobra.consultaCd(obra);
-            int tp_obra = 0;
-            try {
-                obra.getRetorno().first();
-                tp_obra = obra.getRetorno().getInt("TP_OBRA");
-            } catch (SQLException ex) {
-                Logger.getLogger(GerenciarManutencao.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
             manutencaoobra.setDt_inicio(dt_inicio.getText());
-            manutencaoobra.setDt_final(dt_fincal.getText());
+            manutencaoobra.setDt_final(dt_final.getText());
             manutencaoobra.setCusto(Double.parseDouble(custo.getText()));
             manutencaoobra.setDs_servico(ds_servico.getText());
-            manutencaoobra.setTp_obra(tp_obra);
+            manutencaoobra.setTp_obra(2);
         }
     }
 }
